@@ -1,13 +1,29 @@
-import logo from './logo.svg'
-import './App.css'
-import { Box, Center } from '@chakra-ui/react'
+import { Center } from '@chakra-ui/react'
+import { supabase } from './supabaseClient'
 import { FontColor } from './styles'
+import { useState, useEffect } from 'react'
+import Auth from './Auth'
+import Account from './Account'
 
 function App() {
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
   return (
-    <Center h={'100vh'} color={FontColor.main}>
-      chakra-componet
-    </Center>
+    <>
+      <div className="container" style={{ padding: '50px 0 100px 0' }}>
+        {console.log(session)}
+        {!session ? <Auth /> : <Account key={session.user.id} session={session} />}
+      </div>
+    </>
   )
 }
 
