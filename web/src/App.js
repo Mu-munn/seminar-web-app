@@ -4,6 +4,8 @@ import { FontColor } from './styles'
 import { useState, useEffect } from 'react'
 import Auth from './Auth'
 import Account from './Account'
+import SignUp from '../src/pages/SignUp'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -17,14 +19,7 @@ function App() {
       setSession(session)
     })
   }, [])
-  return (
-    <>
-      <div className="container" style={{ padding: '50px 0 100px 0' }}>
-        {console.log(session)}
-        {!session ? <Auth /> : <Account key={session.user.id} session={session} />}
-      </div>
-    </>
-  )
+  return <>{!session ? <Auth /> : <Account key={session.user.id} session={session} />}</>
 }
 
 export default App

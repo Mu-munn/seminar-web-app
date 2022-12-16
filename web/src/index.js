@@ -4,13 +4,24 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ChakraProvider } from '@chakra-ui/react'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import Auth from './Auth'
+import Account from './Account'
+import SignUp from '../src/pages/SignUp'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
   // <React.StrictMode>
   <ChakraProvider>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<App />} />
+        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/SignIn" element={<Auth />} />
+      </Routes>
+    </BrowserRouter>
+    {/* <App /> */}
   </ChakraProvider>
   // </React.StrictMode>
 )

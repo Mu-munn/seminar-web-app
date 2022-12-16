@@ -28,8 +28,8 @@ const Account = ({ session }) => {
 
       if (data) {
         setUsername(data.username)
-        setWebsite(data.website)
-        setAvatarUrl(data.avatar_url)
+        // setWebsite(data.website)
+        // setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
       alert(error.message)
