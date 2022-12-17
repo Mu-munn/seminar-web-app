@@ -69,11 +69,12 @@ export default function SignUp() {
       minH={"100vh"}
       align={"center"}
       justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
+      // bg={useColorModeValue("gray.50", "gray.800")}
+      bg={"#2C4C81"}
     >
       <Stack spacing={8} mx={"auto"} maxW={"70%"} py={12} px={6} w={"70%"}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+          <Heading fontSize={"4xl"} textAlign={"center"} color={"white"}>
             ログイン
           </Heading>
         </Stack>

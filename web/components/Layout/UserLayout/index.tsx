@@ -96,10 +96,10 @@ export const UserLayout = (props: AdminLayoutProps) => {
           <HStack>
             {/* <LogoWhite h='6' ml='3' mb='6' mt='2' /> */}
             <Text fontSize='6' fontWeight='bold' pb='1'>
-              {` "[dev]"}管理画面`}
+              {`ダッシュボード`}
             </Text>
           </HStack>
-          <Link href='/'>
+          <Link href='/profile'>
             <Box
               as='a'
               p='3'

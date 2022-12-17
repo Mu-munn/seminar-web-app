@@ -63,15 +63,10 @@ export default function SignUp() {
     // console.log(data, error)
   }
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
+    <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"#2C4C81"}>
       <Stack spacing={8} mx={"auto"} maxW={"70%"} py={12} px={6} w={"70%"}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+          <Heading fontSize={"4xl"} textAlign={"center"} color={"white"}>
             新規登録
           </Heading>
         </Stack>
