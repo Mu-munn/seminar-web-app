@@ -10,10 +10,14 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.13",
+    "@chakra-ui/pro-theme": "^0.0.57",
     "@chakra-ui/react": "^2.4.3",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@next/font": "13.0.7",
+    "@supabase/auth-helpers-nextjs": "^0.5.2",
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/auth-ui-react": "^0.2.6",
     "@supabase/supabase-js": "^2.2.0",
     "@types/node": "18.11.15",
     "@types/react": "18.0.26",
@@ -24,6 +28,7 @@
     "next": "13.0.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.7.1",
     "typescript": "4.9.4"
   }
 }
