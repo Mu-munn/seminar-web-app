@@ -31,6 +31,7 @@ import { ReactElement, ReactNode, useEffect } from "react"
 import { ScrollArea } from "./ScrollArea"
 import { SidebarLink } from "./SidebarLink"
 import { UserInfo } from "./UserInfo"
+import { supabase } from "../../../src/libs/utils/supabaseClient"
 
 const SidebarLinkComponent = forwardRef(function LogoComponent(
   props: {
@@ -59,6 +60,18 @@ export const UserLayout = (props: AdminLayoutProps) => {
   const toast = useToast()
 
   const isClosable = useBreakpointValue({ base: true, md: false })
+
+  const handleLogOut = async (e: any) => {
+    e.preventDefault()
+
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+      alert(JSON.stringify(error))
+    } else {
+      router.push("/signIn")
+    }
+  }
 
   return (
     <Flex
@@ -133,7 +146,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
               >
                 お問い合わせ
               </SidebarLink>
-              <SidebarLink mt='2' icon={<RiLogoutBoxRLine />} onClick={() => {}}>
+              <SidebarLink mt='2' icon={<RiLogoutBoxRLine />} onClick={handleLogOut}>
                 ログアウト
               </SidebarLink>
             </Box>

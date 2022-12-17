@@ -83,7 +83,7 @@ export default function Account(session: any) {
   return (
     <>
       <UserLayout>
-        <Text>a</Text>
+        <Box></Box>
       </UserLayout>
       {/* <Button onClick={handleLogOut}>ログアウト</Button> */}
     </>
