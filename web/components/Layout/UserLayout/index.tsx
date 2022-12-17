@@ -5,7 +5,6 @@ import {
   forwardRef,
   Heading,
   HStack,
-  Link,
   Spacer,
   Stack,
   Text,
@@ -26,6 +25,7 @@ import {
 import { BiBriefcase, BiCheck, BiCheckboxChecked, BiCheckCircle, BiRocket } from "react-icons/bi"
 import { RiLogoutBoxRLine } from "react-icons/ri"
 import { useRouter } from "next/router"
+import Link from "next/link"
 import { ReactElement, ReactNode, useEffect } from "react"
 // import useAuthUser from "../../src/hooks/useAuthUser"
 import { ScrollArea } from "./ScrollArea"
@@ -113,17 +113,15 @@ export const UserLayout = (props: AdminLayoutProps) => {
             </Box>
           </Link>
           <ScrollArea pt='5' pb='6'>
-            <SidebarLink display={{ base: "block", lg: "none" }} mb='2' icon={<BsSearch />}>
+            {/* <SidebarLink display={{ base: "block", lg: "none" }} mb='2' icon={<BsSearch />}>
               Search
-            </SidebarLink>
+            </SidebarLink> */}
             <Stack pb='6'>
-              <Link href='/admin'>
-                <SidebarLinkComponent icon={<BsBuilding />}>会社一覧</SidebarLinkComponent>
+              <Link href='/myPage'>
+                <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
               </Link>
-              <Link href='/admin/temporary-corps?cityCode=212148'>
-                <SidebarLinkComponent icon={<BsLightbulb />}>
-                  可児市の会社候補一覧
-                </SidebarLinkComponent>
+              <Link href='/everyone'>
+                <SidebarLinkComponent icon={<BsLightbulb />}>みんなの活動</SidebarLinkComponent>
               </Link>
               {/* <DeployButton /> */}
 
@@ -141,7 +139,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 mt='2'
                 icon={<BsMailbox />}
                 onClick={(e: any) => {
-                  e.preventDefault()
+                  //  ここでお問い合わせページに遷移
                 }}
               >
                 お問い合わせ
@@ -169,17 +167,17 @@ export const UserLayout = (props: AdminLayoutProps) => {
           rounded={{ md: "lg" }}
           overflow='auto'
         >
-          {/* <Flex direction='column' height='full'>
-            <BasePadding width='100%' maxW='7xl' py={0} mx='auto'>
-              <Flex w='full' pt='5' justify='space-between' align='center'>
+          <Flex direction='column' height='full'>
+            <Box width='100%' maxW='7xl' py={0} px={5} mx='auto'>
+              <Flex w='full' pt='2' justify='space-between' align='center'>
                 <Flex align='center'>
-                  <MobileMenuButton onClick={toggle} isOpen={isOpen} />
-                  <NavBreadcrumb />
+                  {/* <MobileMenuButton onClick={toggle} isOpen={isOpen} />
+                  <NavBreadcrumb /> */}
                 </Flex>
               </Flex>
               <Box py={{ base: "6" }}>{children}</Box>
-            </BasePadding>
-          </Flex> */}
+            </Box>
+          </Flex>
         </Box>
       </Box>
     </Flex>

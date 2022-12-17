@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { useUser, useSupabaseClient, Session } from "@supabase/auth-helpers-react"
-import { Box, Button, Text } from "@chakra-ui/react"
+import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { Shell } from "./ShellWithSidebarOnFullAccent/Shell"
 import { UserLayout } from "./Layout/UserLayout"
+import { BasicTable } from "./BasicTable"
 
 export default function Account(session: any) {
   const router = useRouter()
@@ -83,7 +84,19 @@ export default function Account(session: any) {
   return (
     <>
       <UserLayout>
-        <Box></Box>
+        <Stack>
+          <Heading pl={2} fontSize={"20px"}>
+            自分の活動
+          </Heading>
+          <Box h={"10px"}></Box>
+          {/* <BasicTable></BasicTable> */}
+          <Box h={"30px"}></Box>
+          <Heading pl={2} fontSize={"20px"}>
+            みんなの活動
+          </Heading>
+          <Box h={"10px"}></Box>
+          <BasicTable></BasicTable>
+        </Stack>
       </UserLayout>
       {/* <Button onClick={handleLogOut}>ログアウト</Button> */}
     </>
