@@ -81,7 +81,7 @@ export default function SignUp() {
           <Stack spacing={4} w={"80%"} my={10}>
             <FormControl id='course' isRequired>
               <FormLabel>学部・学科</FormLabel>
-              <Select placeholder='学年' name='course' onChange={handleInputChange}>
+              <Select placeholder='--' name='course' onChange={handleInputChange}>
                 <option value='0'>情報総合学科</option>
                 <option value='1'>音楽・音響学科</option>
                 <option value='2'>Option 3</option>
@@ -90,7 +90,7 @@ export default function SignUp() {
             <HStack justify={"space-between"}>
               <FormControl id='grade' isRequired w={"50%"}>
                 <FormLabel>学年</FormLabel>
-                <Select placeholder='Select option' name='grade' onChange={handleInputChange}>
+                <Select placeholder='--' name='grade' onChange={handleInputChange}>
                   <option value='1'>1</option>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
@@ -99,7 +99,7 @@ export default function SignUp() {
               </FormControl>
               <FormControl id='email' isRequired w={"50%"}>
                 <FormLabel>クラス</FormLabel>
-                <Select placeholder='Select option' name='class' onChange={handleInputChange}>
+                <Select placeholder='--' name='class' onChange={handleInputChange}>
                   <option value='0'>なし</option>
                   <option value='1'>A</option>
                   <option value='2'>B</option>
