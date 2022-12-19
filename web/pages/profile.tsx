@@ -73,6 +73,9 @@ export default function Profile(session: any) {
               <Heading size='lg' as='h2' mt={3}>
                 {"プロフィールの更新"}
               </Heading>
+              <Button background={'red'}>
+                あいうえお
+              </Button>
 
               {/* {isAdmin && router.pathname.includes("edit") && (
                 <CorpManagerFields corpManager={corpManager} />

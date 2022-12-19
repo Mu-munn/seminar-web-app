@@ -49,15 +49,16 @@ export default function SignUp() {
     const email = fieldValues.email
     const pass = fieldValues.password
 
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: pass,
-      options: {
-        data: {
-          full_name: "mukaigawara",
-        },
-      },
-    })
+    // sinnkitouroku
+    // const { data, error } = await supabase.auth.signUp({
+    //   email: email,
+    //   password: pass,
+    //   options: {
+    //     data: {
+    //       full_name: "mukaigawara",
+    //     },
+    //   },
+    // })
 
     // await onSignUp(fieldValues.email, fieldValues.password, 'mukai', 0)
     // console.log(data, error)
