@@ -18,6 +18,7 @@ import { ScrollArea } from './ScrollArea'
 import { SidebarLink } from './SidebarLink'
 import { UserInfo } from './UserInfo'
 import { supabase } from '../../../src/libs/utils/supabaseClient'
+import useAuthUser from '@/hooks/useAuthUser'
 
 const SidebarLinkComponent = forwardRef(function LogoComponent(
   props: {
@@ -27,9 +28,9 @@ const SidebarLinkComponent = forwardRef(function LogoComponent(
   ref: any
 ) {
   return (
-    <a ref={ref} {...props}>
-      <SidebarLink icon={props.icon}>{props.children}</SidebarLink>
-    </a>
+    // <a ref={ref} {...props}>
+    <SidebarLink icon={props.icon}>{props.children}</SidebarLink>
+    // </a>
   )
 })
 
@@ -42,6 +43,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
 
   const router = useRouter()
   const toast = useToast()
+  const { user } = useAuthUser()
 
   const isClosable = useBreakpointValue({ base: true, md: false })
 
@@ -65,7 +67,6 @@ export const UserLayout = (props: AdminLayoutProps) => {
       sx={{ '--sidebar-width': '16rem' }}
     >
       <Box
-        as="nav"
         display="block"
         height="100vh"
         flex="1"
@@ -78,14 +79,13 @@ export const UserLayout = (props: AdminLayoutProps) => {
       >
         <Box fontSize="sm" lineHeight="tall">
           <HStack>
-            {/* ここにロゴ */}
+            ここにロゴ
             <Text fontSize="6" fontWeight="bold" pb="1">
-              {`ダッシュボード`}
+              {user?.id}
             </Text>
           </HStack>
           <Link href="/profile">
             <Box
-              as="a"
               p="3"
               display="block"
               transition="background 0.1s"
