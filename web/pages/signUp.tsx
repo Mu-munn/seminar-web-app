@@ -30,6 +30,12 @@ export default function SignUp() {
   //   const [email, setEmail] = useState('')
 
   const defaultValue = {
+    course: 0, // 学科 0:情報総合学科 1:電子工学学科みたいな感じ
+    grade: 0, // 学年
+    class:  0,// クラス
+    classNumber: 0,// 出席番号
+    studentNumber: 0, // 学籍番号
+    fullName:"",
     email: "",
     password: "",
   }
@@ -73,40 +79,41 @@ export default function SignUp() {
         </Stack>
         <Center rounded={"lg"} bg={useColorModeValue("white", "gray.700")} boxShadow={"lg"} p={8}>
           <Stack spacing={4} w={"80%"} my={10}>
-            <FormControl id='email' isRequired>
+            <FormControl id='course' isRequired>
               <FormLabel>学部・学科</FormLabel>
-              <Select placeholder='学年'>
-                <option value='option1'>情報総合学科</option>
-                <option value='option2'>音楽・音響学科</option>
-                <option value='option3'>Option 3</option>
+              <Select placeholder='学年' name='course' onChange={handleInputChange}>
+                <option value='0'>情報総合学科</option>
+                <option value='1'>音楽・音響学科</option>
+                <option value='2'>Option 3</option>
               </Select>
             </FormControl>
             <HStack justify={"space-between"}>
-              <FormControl id='email' isRequired w={"50%"}>
-                <FormLabel>苗字</FormLabel>
-                <Select placeholder='Select option'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+              <FormControl id='grade' isRequired w={"50%"}>
+                <FormLabel>学年</FormLabel>
+                <Select placeholder='Select option' name='grade' onChange={handleInputChange}>
+                  <option value='1'>1</option>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
                 </Select>
               </FormControl>
               <FormControl id='email' isRequired w={"50%"}>
-                <FormLabel>名前</FormLabel>
-                <Select placeholder='Select option'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+                <FormLabel>クラス</FormLabel>
+                <Select placeholder='Select option' name='class' onChange={handleInputChange}>
+                  <option value='0'>なし</option>
+                  <option value='1'>A</option>
+                  <option value='2'>B</option>
                 </Select>
               </FormControl>
             </HStack>
             <HStack justify={"space-between"}>
-              <FormControl id='email' isRequired w={"50%"}>
+              <FormControl id='' isRequired w={"50%"}>
                 <FormLabel>苗字</FormLabel>
-                <Input type='email' name='email' onChange={handleInputChange} />
+                <Input type='text' name='lastName' onChange={handleInputChange} />
               </FormControl>
               <FormControl id='email' isRequired w={"50%"}>
                 <FormLabel>名前</FormLabel>
-                <Input type='email' name='email' onChange={handleInputChange} />
+                <Input type='text' name='firstName' onChange={handleInputChange} />
               </FormControl>
             </HStack>
 
