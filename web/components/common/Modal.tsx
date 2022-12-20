@@ -31,7 +31,7 @@ export const OriginalModal = ({ isOpen, onClose }: any) => {
       alert(JSON.stringify(error))
     } else {
       onClose()
-      Router.push('/myPage')
+      Router.reload()
     }
   }
   return (
