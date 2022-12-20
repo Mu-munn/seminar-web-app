@@ -1,12 +1,4 @@
-import {
-  AddIcon,
-  DeleteIcon,
-  EditIcon,
-  ExternalLinkIcon,
-  HamburgerIcon,
-  RepeatIcon,
-  TriangleDownIcon,
-} from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   TableContainer,
   Table,
@@ -17,11 +9,9 @@ import {
   Button,
   Box,
   Text,
-  Heading,
   HStack,
   Spacer,
   IconButton,
-  Icon,
   Menu,
   MenuButton,
   MenuItem,
@@ -44,12 +34,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
         </Text>
         <Spacer></Spacer>
         <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label="Options"
-            icon={<HamburgerIcon />}
-            // variant="outline"
-          />
+          <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
           <MenuList>
             <MenuItem icon={<EditIcon />}>編集する</MenuItem>
             <MenuItem color={'red.600'} icon={<DeleteIcon />}>
