@@ -30,19 +30,18 @@ import { text } from "stream/consumers"
 export default function SignUp() {
   const [loading, setLoading] = useState(false)
   const [value, setValue] = useState("1")
-  //   const [email, setEmail] = useState('')
 
   const defaultValue = {
-    course: 0, // 学科 0:情報総合学科 1:電子工学学科みたいな感じ
-    grade: 0, // 学年
-    class:  0,// クラス
-    classNumber: 0,// 出席番号
-    studentNumber: 0, // 学籍番号
-    lastName:"", //姓
-    firstName:"", //名
-    fullName:"", //フルネーム
-    email: "", //メールアドレス
-    password: "" //パスワード
+    course: 0,  
+    grade: 0, 
+    class:  0,
+    classNumber: 0,
+    studentNumber: 0,
+    lastName:"",
+    firstName:"",
+    fullName:"",
+    email: "",
+    password: ""
   }
   const [fieldValues, setFieldValues] = useState(defaultValue)
 
@@ -58,13 +57,14 @@ export default function SignUp() {
     const name = target.name
     const value = target.value
     
+    //StringからNumberにキャストして格納するか否か
     if(!(name==='lastName' ||name==='firstName'||name==='email'||name==='password' )){
       setFieldValues({ ...fieldValues, [name]: Number(value) })
     }else{
       setFieldValues({ ...fieldValues, [name]: value })
     }
   }
-  //   const toast = useToast()
+
   const onSubmit = async (e: any) => {
     e.preventDefault()
     setFieldValues({ ...fieldValues, ['fullName']: toFullName()})
@@ -72,19 +72,6 @@ export default function SignUp() {
     const email = fieldValues.email
     const pass = fieldValues.password
 
-    // sinnkitouroku
-    // const { data, error } = await supabase.auth.signUp({
-    //   email: email,
-    //   password: pass,
-    //   options: {
-    //     data: {
-    //       full_name: "mukaigawara",
-    //     },
-    //   },
-    // })
-
-    // await onSignUp(fieldValues.email, fieldValues.password, 'mukai', 0)
-    // console.log(data, error)
   }
 
   return (
