@@ -1,4 +1,22 @@
-import { TableContainer, Table, Thead, Tr, Th, Tbody, Button, Box, Text } from '@chakra-ui/react'
+import { DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
+import {
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Button,
+  Box,
+  Text,
+  HStack,
+  Spacer,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
 
 interface CorpListItemProps {
@@ -10,9 +28,22 @@ export const CorpListItem = (props: CorpListItemProps) => {
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
-      <Text fontWeight={'bold'} px={3} pb={3}>
-        {corp?.corp_name}
-      </Text>
+      <HStack mb={'20px'}>
+        <Text fontWeight={'bold'} px={3}>
+          {corp?.corp_name}
+        </Text>
+        <Spacer></Spacer>
+        <Menu>
+          <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
+          <MenuList>
+            <MenuItem icon={<EditIcon />}>編集する</MenuItem>
+            <MenuItem color={'red.600'} icon={<DeleteIcon />}>
+              削除する
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </HStack>
+
       <TableContainer w={'100%'}>
         <Table size={'sm'}>
           <Thead>
