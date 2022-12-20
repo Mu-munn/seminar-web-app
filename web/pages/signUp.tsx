@@ -23,6 +23,9 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { useState } from "react"
 import { supabase } from "../src/libs/utils/supabaseClient"
+import { Console } from "console"
+import { findDOMNode } from "react-dom"
+import { text } from "stream/consumers"
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false)
@@ -35,6 +38,8 @@ export default function SignUp() {
     class:  0,// クラス
     classNumber: 0,// 出席番号
     studentNumber: 0, // 学籍番号
+    lastName:"",
+    firstName:"",
     fullName:"",
     email: "",
     password: "",
@@ -42,15 +47,27 @@ export default function SignUp() {
   const [fieldValues, setFieldValues] = useState(defaultValue)
 
   const [showPassword, setShowPassword] = useState(false)
+
+  function toFullName(){
+    const fullName=fieldValues.lastName+fieldValues.firstName
+    return fullName
+  }
+
   const handleInputChange = async (e: any) => {
     const target = e.target
     const name = target.name
     const value = target.value
-    setFieldValues({ ...fieldValues, [name]: value })
+    
+    if(name=='stundentNumber' || name=='classNumber'){
+      setFieldValues({ ...fieldValues, [name]: Number(value) })
+    }else{
+      setFieldValues({ ...fieldValues, [name]: value })
+    }
   }
   //   const toast = useToast()
   const onSubmit = async (e: any) => {
     e.preventDefault()
+    fieldValues.fullName=toFullName()
     console.log(fieldValues)
     const email = fieldValues.email
     const pass = fieldValues.password
@@ -69,6 +86,7 @@ export default function SignUp() {
     // await onSignUp(fieldValues.email, fieldValues.password, 'mukai', 0)
     // console.log(data, error)
   }
+
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"#2C4C81"}>
       <Stack spacing={8} mx={"auto"} maxW={"70%"} py={12} px={6} w={"70%"}>
@@ -84,7 +102,6 @@ export default function SignUp() {
               <Select placeholder='--' name='course' onChange={handleInputChange}>
                 <option value='0'>情報総合学科</option>
                 <option value='1'>音楽・音響学科</option>
-                <option value='2'>Option 3</option>
               </Select>
             </FormControl>
             <HStack justify={"space-between"}>
@@ -106,12 +123,23 @@ export default function SignUp() {
                 </Select>
               </FormControl>
             </HStack>
+            //出席番号と学籍番号
             <HStack justify={"space-between"}>
-              <FormControl id='' isRequired w={"50%"}>
+              <FormControl id='classNumber' isRequired w={"40%"}>
+                <FormLabel>出席番号</FormLabel>
+                  <Input type='text' maxLength={2} name='classNumber' onChange={handleInputChange} />
+              </FormControl>
+              <FormControl id='studentNumber' isRequired w={"60%"}>
+                <FormLabel>学籍番号</FormLabel>
+                  <Input type='text' name='studentNumber' onChange={handleInputChange} maxLength={8}  />
+              </FormControl>
+            </HStack>
+            <HStack justify={"space-between"}>
+              <FormControl id='lastName' isRequired w={"50%"}>
                 <FormLabel>苗字</FormLabel>
                 <Input type='text' name='lastName' onChange={handleInputChange} />
               </FormControl>
-              <FormControl id='email' isRequired w={"50%"}>
+              <FormControl id='firstName' isRequired w={"50%"}>
                 <FormLabel>名前</FormLabel>
                 <Input type='text' name='firstName' onChange={handleInputChange} />
               </FormControl>
