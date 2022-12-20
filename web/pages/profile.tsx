@@ -20,16 +20,38 @@ import {
 import { useRouter } from "next/router"
 import { UserLayout } from "@/components/Layout/UserLayout"
 import { FieldGroup } from "@/components/FieldGroup"
+import useAuthUser from "@/hooks/useAuthUser"
 
-export default function Profile(session: any) {
+export interface UserCreate {
+  fullName: string // フルネーム
+  course: number // 学科 0:情報総合学科 1:電子工学学科みたいな感じ
+  grade: number // 学年
+  class: string // クラス
+  classNumber: number // 出席番号
+  studentNumber: number // 学籍番号
+}
+
+export default function Profile(session: UserCreate) {
   const router = useRouter()
   const supabase = useSupabaseClient()
-  const user = useUser()
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState(null)
-  const [website, setWebsite] = useState(null)
-  const [avatar_url, setAvatarUrl] = useState(null)
+  const { user, isLoading, token } = useAuthUser();
+  // useStateでsessionの要素をデフォルトにする？
+  session = {
+    fullName: 'mukaigawara',
+    course: 0,
+    grade: 1,
+    class: 'A',
+    classNumber:11,
+    studentNumber:20000000
+  }
+  const [fullName,setFullName] = useState<string>(session.fullName);
+  const [course,setCourse] = useState<number>(session.course);
+  const [grade,setGrade] = useState<number>(session.grade);
+  const [classes,setClasses] = useState<string>(session.class);
+  const [classNumber,setClassNumber] = useState<number>(session.classNumber);
+  const [studentNumber,setStudentNumber] = useState<number>(session.studentNumber);
 
+  
   const handleLogOut = async (e: any) => {
     e.preventDefault()
 
@@ -42,26 +64,20 @@ export default function Profile(session: any) {
     }
   }
   const submit = async (e: any) => {
+
+    
+    console.log(user?.user_metadata.full_name);
+    console.log(session);
+    console.log(fullName);
+    console.log(course);
+    console.log(grade);
+    console.log(classes);
+    console.log(classNumber);
+    console.log(studentNumber);
+    
+    
+    
     e.preventDefault()
-    // try {
-    //   setIsLoading(true)
-    //   await CorpService.createOrUpdateCorp({
-    //     corpCreate: fieldValues,
-    //     corpId: corpId,
-    //   })
-    //   if (corpSecretFieldValues) {
-    //     await CorpSecretService.createOrUpdateCorpSecret({
-    //       corpSecretCreate: corpSecretFieldValues,
-    //       corpId: corpId,
-    //       managerUserId,
-    //     })
-    //   }
-    //   router.push(`/admin/corps/${corpId}`)
-    // } catch (error) {
-    //   console.log(error)
-    //   window.alert(error)
-    //   setIsLoading(false)
-    // }
   }
 
   return (
@@ -73,173 +89,83 @@ export default function Profile(session: any) {
               <Heading size='lg' as='h2' mt={3}>
                 {"プロフィールの更新"}
               </Heading>
-
-              {/* {isAdmin && router.pathname.includes("edit") && (
-                <CorpManagerFields corpManager={corpManager} />
-              )} */}
-              {/* <FieldGroup title='会社情報'> */}
               <VStack width='full' spacing='6'>
-                <FormControl id='name' isRequired>
-                  <FormLabel>名前</FormLabel>
+
+                <FormControl id='fullName' isRequired>
+                  <FormLabel>フルネーム</FormLabel>
                   <Input
-                    name='name'
+                    name='fullName'
                     type='text'
-                    //   defaultValue={fieldValues.name}
-                    //   maxLength={255}
-                    //   onChange={handleInputChange}
+                    value={fullName}
+                    onChange ={(event)=>setFullName(event.target.value)}
                   />
                 </FormControl>
 
-                {/* <FormControl id='prefectures' isRequired>
-                    <FormLabel>都道府県</FormLabel>
-                    <Select
-                      name='prefectures'
-                      placeholder={"--都道府県を選択して下さい--"}
-                      value={fieldValues.prefName}
-                      onChange={(values: any) => {
-                        onChangePrefecture(values)
-                      }}
+                <FormControl id='course' isRequired>
+                    <FormLabel>学科</FormLabel>
+                    <Select name='course' 
+                    value={course} 
+                    placeholder={'学科を選択'}
+                    onChange={(event) => setCourse(parseInt(event.target.value))}
                     >
-                      {prefecturesData.map((e) => {
-                        return (
-                          <option key={e.id} value={e.name}>
-                            {e.name}
-                          </option>
-                        )
-                      })}
+                      <option value='0'>情報総合学科</option>
+                      <option value='1'>情報システム科</option>
+                      <option value='2'>情報処理学科</option>
+                      <option value='3'>AIシステム科</option>
+                      <option value='4'>情報セキュリティ学科</option>
+                      <option value='5'>高度情報学科</option>
+                      <option value='6'>IT技術研究科</option>
                     </Select>
                   </FormControl>
 
-                  {fieldValues.prefId && (
-                    <FormControl id='cites' isRequired>
-                      <FormLabel>市区町村</FormLabel>
-                      <Select
-                        name='cites'
-                        placeholder={"--市町村を選択してください--"}
-                        value={fieldValues.cityName}
-                        onChange={(values: any) => {
-                          onChangeCity(values)
-                        }}
-                      >
-                        {selectedCities.map((e) => {
-                          return (
-                            <option key={e.id} value={e.name}>
-                              {e.name}
-                            </option>
-                          )
-                        })}
-                      </Select>
-                    </FormControl>
-                  )} */}
-
-                {/* <FormControl id='type'>
-                    <FormLabel>主な仕事（最大10文字）</FormLabel>
-                    <Input
-                      name='type'
-                      type='text'
-                      defaultValue={fieldValues.type}
-                      maxLength={10}
-                      onChange={handleInputChange}
-                    />
-                  </FormControl> */}
-
-                {/* <FormControl id='industries' isRequired>
-                    <FormLabel>業種</FormLabel>
-                    <Select
-                      name='industries'
-                      placeholder={"--業種を選択してください--"}
-                      value={fieldValues.industryId}
-                      onChange={(values: any) => {
-                        onChangeIndustry(values)
-                      }}
-                    >
-                      {industriesData.map((e) => {
-                        return (
-                          <option key={e.id} value={e.id}>
-                            {e.name}
-                          </option>
-                        )
-                      })}
+                <FormControl id='grade' isRequired>
+                  <FormLabel>学年</FormLabel>
+                  <Select name='grade' placeholder={'学年を選択'}
+                  value={grade}
+                  onChange={(event) => setGrade(parseInt(event.target.value))}
+                  >
+                      <option value='1'>１年</option>
+                      <option value='2'>２年</option>
+                      <option value='3'>３年</option>
+                      <option value='4'>４年</option>
                     </Select>
-                  </FormControl> */}
+                </FormControl>
 
-                <FormControl id='slogan'>
-                  <FormLabel>メールアドレス</FormLabel>
+                <FormControl id='class' isRequired>
+                  <FormLabel>クラス</FormLabel>
                   <Input
-                    name='slogan'
+                    name='class'
                     type='text'
-                    //   defaultValue={fieldValues.slogan}
-                    //   onChange={handleInputChange}
+                    value={classes}
+                    onChange={(event) => setClasses(event.target.value)}
+                    maxLength={2}
                   />
                 </FormControl>
 
-                <FormControl id='description'>
-                  <FormLabel>会社説明</FormLabel>
-                  <Textarea
-                    name='description'
-                    //   defaultValue={fieldValues.description}
-                    //   rows={5}
-                    //   onChange={handleInputChange}
-                  />
-                </FormControl>
-
-                <FormControl id='homepage'>
-                  <FormLabel>ホームページURL</FormLabel>
+                <FormControl id='classNumber' isRequired>
+                  <FormLabel>出席番号</FormLabel>
                   <Input
-                    name='homepage'
-                    type='text'
-                    //   defaultValue={fieldValues.homepage}
-                    //   onChange={handleInputChange}
+                    name='classNumber'
+                    type='number'
+                    value={classNumber}
+                    onChange={(event) => setClassNumber(parseInt(event.target.value))}
+                    max={100}
                   />
                 </FormControl>
 
-                <FormControl id='slug' isRequired>
-                  <FormLabel>
-                    会社ID（会社のURLなどに使用されます。変更依頼は運営にお問い合わせください。）
-                  </FormLabel>
+                <FormControl id='studentNumber' isRequired>
+                  <FormLabel>学籍番号</FormLabel>
                   <Input
-                    name='slug'
-                    type='text'
-                    //   defaultValue={fieldValues.slug}
-                    //   onChange={handleInputChange}
-                    //   readOnly={!!fieldValues.id}
+                    name='studentNumber'
+                    type='Number'
+                    value={studentNumber}
+                    onChange={(event) => setStudentNumber(parseInt(event.target.value))}
+                    min={10000000}
+                    max={100000000}
                   />
                 </FormControl>
 
-                <FormControl id='hiringLevel'>
-                  <FormLabel>採用状況</FormLabel>
-                  <Select
-                    name='hiringLevel'
-                    //   value={fieldValues.hiringLevel.toString()}
-                    //   onChange={handleInputChange}
-                  >
-                    <option value='0'>募集していない</option>
-                    <option value='1'>ゆる募</option>
-                    <option value='2'>募集中</option>
-                  </Select>
-                </FormControl>
-
-                <FormControl id='active'>
-                  <FormLabel>会社情報の公開/非公開</FormLabel>
-                  <Select
-                    name='active'
-                    //   value={fieldValues.active ? "1" : "0"}
-                    //   onChange={handleInputChange}
-                  >
-                    <option value='1'>公開</option>
-                    <option value='0'>非公開</option>
-                  </Select>
-                </FormControl>
               </VStack>
-              {/* </FieldGroup> */}
-
-              {/* {isAdmin && (
-                <CorpSecretFields
-                  corpSecret={corpSecret}
-                  homepage={fieldValues.homepage}
-                  onFieldValuesChanged={onCorpSecretFieldValuesChanged}
-                />
-              )} */}
             </Stack>
 
             <HStack mt={10}>
