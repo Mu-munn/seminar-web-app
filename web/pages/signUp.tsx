@@ -38,11 +38,11 @@ export default function SignUp() {
     class:  0,// クラス
     classNumber: 0,// 出席番号
     studentNumber: 0, // 学籍番号
-    lastName:"",
-    firstName:"",
-    fullName:"",
-    email: "",
-    password: "",
+    lastName:"", //姓
+    firstName:"", //名
+    fullName:"", //フルネーム
+    email: "", //メールアドレス
+    password: "" //パスワード
   }
   const [fieldValues, setFieldValues] = useState(defaultValue)
 
@@ -58,7 +58,7 @@ export default function SignUp() {
     const name = target.name
     const value = target.value
     
-    if(name=='stundentNumber' || name=='classNumber'){
+    if(!(name==='lastName' ||name==='firstName'||name==='email'||name==='password' )){
       setFieldValues({ ...fieldValues, [name]: Number(value) })
     }else{
       setFieldValues({ ...fieldValues, [name]: value })
@@ -67,7 +67,7 @@ export default function SignUp() {
   //   const toast = useToast()
   const onSubmit = async (e: any) => {
     e.preventDefault()
-    fieldValues.fullName=toFullName()
+    setFieldValues({ ...fieldValues, ['fullName']: toFullName()})
     console.log(fieldValues)
     const email = fieldValues.email
     const pass = fieldValues.password
