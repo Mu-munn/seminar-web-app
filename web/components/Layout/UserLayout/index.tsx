@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   forwardRef,
+  Heading,
   HStack,
   Stack,
   Text,
@@ -62,7 +63,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
   return (
     <Flex
       height="100vh"
-      bg={mode('blue.800', 'gray.800')}
+      bg={mode('#2c5282', 'gray.800')}
       overflow="hidden"
       sx={{ '--sidebar-width': '16rem' }}
     >
@@ -78,26 +79,15 @@ export const UserLayout = (props: AdminLayoutProps) => {
         position="fixed"
       >
         <Box fontSize="sm" lineHeight="tall">
-          <HStack>
-            ここにロゴ
-            <Text fontSize="6" fontWeight="bold" pb="1">
-              {user?.id}
-            </Text>
-          </HStack>
-          <Link href="/profile">
-            <Box
-              p="3"
-              display="block"
-              transition="background 0.1s"
-              rounded="xl"
-              _hover={{ bg: 'whiteAlpha.200' }}
-              whiteSpace="nowrap"
-            >
-              <UserInfo />
-            </Box>
-          </Link>
-          <ScrollArea pt="5" pb="6">
-            <Stack pb="6">
+          <Heading fontSize="40px" fontWeight="bold" pb="1" w={'100%'} textAlign={'center'} pt={3}>
+            MINORU
+          </Heading>
+
+          <ScrollArea pt="5" pb="6" w={'100%'}>
+            <Stack pb="6" w={'100%'}>
+              <Link href="/">
+                <SidebarLinkComponent icon={<BsBuilding />}>ダッシュボード</SidebarLinkComponent>
+              </Link>
               <Link href="/myPage">
                 <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
               </Link>
@@ -105,14 +95,22 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 <SidebarLinkComponent icon={<BsLightbulb />}>みんなの活動</SidebarLinkComponent>
               </Link>
             </Stack>
-            <Box position="absolute" bottom="8">
-              <SidebarLink
-                mt="2"
-                icon={<BsMailbox />}
-                onClick={(e: any) => {
-                  //  ここでお問い合わせページに遷移
-                }}
-              >
+            <Box position="absolute" bottom="8" w={'100%'}>
+              <Link href="/profile">
+                <Box
+                  p="3"
+                  display="block"
+                  transition="background 0.1s"
+                  rounded="xl"
+                  _hover={{ bg: 'whiteAlpha.200' }}
+                  // whiteSpace="nowrap"
+                  bg={'linear-gradient(145deg, #284a75, #2f588b)'}
+                  boxShadow={'20px 20px 60px #25466f,-20px -20px 60px #335e96'}
+                >
+                  <UserInfo />
+                </Box>
+              </Link>
+              <SidebarLink mt="5" icon={<BsMailbox />}>
                 お問い合わせ
               </SidebarLink>
               <SidebarLink mt="2" icon={<RiLogoutBoxRLine />} onClick={handleLogOut}>
