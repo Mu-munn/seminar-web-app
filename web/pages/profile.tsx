@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
-import { useUser, useSupabaseClient, Session } from "@supabase/auth-helpers-react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import {
-  Box,
   Button,
   Center,
   FormControl,
@@ -12,14 +11,10 @@ import {
   Select,
   Spacer,
   Stack,
-  StackDivider,
-  Text,
-  Textarea,
   VStack,
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { UserLayout } from "@/components/Layout/UserLayout"
-import { FieldGroup } from "@/components/FieldGroup"
 import useAuthUser from "@/hooks/useAuthUser"
 
 export interface UserCreate {
