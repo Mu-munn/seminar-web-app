@@ -16,8 +16,11 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useToast
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
+import { supabase } from '@/libs/utils/supabaseClient'
+import Router from 'next/router'
 
 interface CorpListItemProps {
   corp: Corp
@@ -25,6 +28,27 @@ interface CorpListItemProps {
 
 export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
+  const toast = useToast()
+
+const onDelete =  async (e: any) =>{
+  try{
+    const { data, error } = await supabase
+    .from('corps')
+    .delete()
+    .eq('corp_id', corp.corp_id)
+  }catch{
+    toast({
+      title: 'エラー',
+      description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
+  }finally{
+    Router.reload()
+  }
+
+}
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -35,9 +59,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
         <Spacer></Spacer>
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-          <MenuList>
-            <MenuItem icon={<EditIcon />}>編集する</MenuItem>
-            <MenuItem color={'red.600'} icon={<DeleteIcon />}>
+          <MenuList >
+            <MenuItem icon={<EditIcon />}>
+              編集する
+            </MenuItem>
+            <MenuItem color={'red.600'} onClick={onDelete} icon={<DeleteIcon />}>
               削除する
             </MenuItem>
           </MenuList>
