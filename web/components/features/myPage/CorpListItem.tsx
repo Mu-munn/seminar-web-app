@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
 import { supabase } from '@/libs/utils/supabaseClient'
+import Router from 'next/router'
 
 interface CorpListItemProps {
   corp: Corp
@@ -33,9 +34,10 @@ const onDelete =  async (e: any) =>{
     .from('corps')
     .delete()
     .eq('corp_id', corp.corp_id)
-    
   }catch{
     alert('Error loading user data!')
+  }finally{
+    Router.reload()
   }
 
 }
