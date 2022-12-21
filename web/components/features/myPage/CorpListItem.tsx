@@ -37,7 +37,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
           <MenuList>
             <MenuItem icon={<EditIcon />}>編集する</MenuItem>
-            <MenuItem color={'red.600'} icon={<DeleteIcon />}>
+            <MenuItem  color={'red.600'} icon={<DeleteIcon />}>
               削除する
             </MenuItem>
           </MenuList>
