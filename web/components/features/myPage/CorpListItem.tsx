@@ -16,6 +16,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useToast
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
 import { supabase } from '@/libs/utils/supabaseClient'
@@ -27,6 +28,7 @@ interface CorpListItemProps {
 
 export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
+  const toast = useToast()
 
 const onDelete =  async (e: any) =>{
   try{
@@ -35,7 +37,13 @@ const onDelete =  async (e: any) =>{
     .delete()
     .eq('corp_id', corp.corp_id)
   }catch{
-    alert('Error loading user data!')
+    toast({
+      title: 'エラー',
+      description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
   }finally{
     Router.reload()
   }
