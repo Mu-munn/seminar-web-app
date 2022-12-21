@@ -3,6 +3,7 @@ import useAuthUser from '../../../src/hooks/useAuthUser'
 
 export const UserInfo = () => {
   const { user } = useAuthUser()
+
   const userName: string = user && user?.user_metadata?.full_name
   const email = user !== undefined && user !== null && user.email
 
