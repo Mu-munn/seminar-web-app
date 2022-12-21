@@ -59,9 +59,6 @@ export default function Profile(session: UserCreate) {
     }
   }
   const submit = async (e: any) => {
-    
-    
-    
     e.preventDefault()
   }
 
