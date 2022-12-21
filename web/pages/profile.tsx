@@ -35,22 +35,22 @@ export default function Profile(session: UserCreate) {
   const router = useRouter()
   const supabase = useSupabaseClient()
   const { user, isLoading, token } = useAuthUser();
-  // useStateでsessionの要素をデフォルトにする？
-  session = {
-    fullName: 'mukaigawara',
-    course: 0,
-    grade: 1,
-    class: 'A',
-    classNumber:11,
-    studentNumber:20000000
-  }
-  const [fullName,setFullName] = useState<string>(session.fullName);
-  const [course,setCourse] = useState<number>(session.course);
-  const [grade,setGrade] = useState<number>(session.grade);
-  const [classes,setClasses] = useState<string>(session.class);
-  const [classNumber,setClassNumber] = useState<number>(session.classNumber);
-  const [studentNumber,setStudentNumber] = useState<number>(session.studentNumber);
+   
+  const [fullName,setFullName] = useState<string>();
+  const [course,setCourse] = useState<number>();
+  const [grade,setGrade] = useState<number>();
+  const [classes,setClasses] = useState<string>();
+  const [classNumber,setClassNumber] = useState<number>();
+  const [studentNumber,setStudentNumber] = useState<number>();
 
+  useEffect(()=>{
+    setFullName(user?.user_metadata.full_name)
+    setCourse(user?.user_metadata.course)
+    setGrade(user?.user_metadata.grade)
+    setClasses(user?.user_metadata.class)
+    setClassNumber(user?.user_metadata.class_number)
+    setStudentNumber(user?.user_metadata.student_number)
+  },[user])
   
   const handleLogOut = async (e: any) => {
     e.preventDefault()
@@ -64,16 +64,6 @@ export default function Profile(session: UserCreate) {
     }
   }
   const submit = async (e: any) => {
-
-    
-    console.log(user?.user_metadata.full_name);
-    console.log(session);
-    console.log(fullName);
-    console.log(course);
-    console.log(grade);
-    console.log(classes);
-    console.log(classNumber);
-    console.log(studentNumber);
     
     
     
@@ -133,13 +123,14 @@ export default function Profile(session: UserCreate) {
 
                 <FormControl id='class' isRequired>
                   <FormLabel>クラス</FormLabel>
-                  <Input
-                    name='class'
-                    type='text'
-                    value={classes}
-                    onChange={(event) => setClasses(event.target.value)}
-                    maxLength={2}
-                  />
+                  <Select name='class' placeholder={'クラスを選択'}
+                  value={classes}
+                  onChange={(event) => setClasses(event.target.value)}
+                  >
+                      <option value='0'>なし</option>
+                      <option value='1'>A</option>
+                      <option value='2'>B</option>
+                    </Select>
                 </FormControl>
 
                 <FormControl id='classNumber' isRequired>
@@ -149,6 +140,7 @@ export default function Profile(session: UserCreate) {
                     type='number'
                     value={classNumber}
                     onChange={(event) => setClassNumber(parseInt(event.target.value))}
+                    min={1}
                     max={100}
                   />
                 </FormControl>
