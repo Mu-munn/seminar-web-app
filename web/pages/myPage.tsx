@@ -46,13 +46,6 @@ const MyPage = () => {
     }
   }
 
-  const deleteBtnClick=()=>{
-    try{
-      
-    }catch{
-
-    }
-  }
 
   return (
     <UserLayout>

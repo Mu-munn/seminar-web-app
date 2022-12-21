@@ -18,6 +18,7 @@ import {
   MenuList,
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
+import { supabase } from '@/libs/utils/supabaseClient'
 
 interface CorpListItemProps {
   corp: Corp
@@ -25,6 +26,19 @@ interface CorpListItemProps {
 
 export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
+
+const onDelete =  async (e: any) =>{
+  try{
+    const { data, error } = await supabase
+    .from('corps')
+    .delete()
+    .eq('corp_id', corp.corp_id)
+    
+  }catch{
+    alert('Error loading user data!')
+  }
+
+}
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -35,9 +49,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
         <Spacer></Spacer>
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-          <MenuList>
-            <MenuItem icon={<EditIcon />}>編集する</MenuItem>
-            <MenuItem  color={'red.600'} icon={<DeleteIcon />}>
+          <MenuList >
+            <MenuItem icon={<EditIcon />}>
+              編集する
+            </MenuItem>
+            <MenuItem color={'red.600'} onClick={onDelete} icon={<DeleteIcon />}>
               削除する
             </MenuItem>
           </MenuList>
