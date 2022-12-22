@@ -1,3 +1,4 @@
+import { AddActiveModal } from '@/components/common/AddActiveModal'
 import { DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   TableContainer,
@@ -91,9 +92,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
         _hover={{ bg: 'blue.500', color: 'white' }}
         color={'blue.500'}
         mt={3}
+        onClick={onOpen}
       >
         活動を追加
       </Button>
+      <AddActiveModal isOpen={isOpen} onClose={onClose} corp={corp} />
     </Box>
   )
 }
