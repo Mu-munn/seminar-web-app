@@ -1,19 +1,14 @@
-import { useState, useEffect } from "react"
-import { useUser, useSupabaseClient, Session } from "@supabase/auth-helpers-react"
-import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react"
-import { useRouter } from "next/router"
-import { Shell } from "./ShellWithSidebarOnFullAccent/Shell"
-import { UserLayout } from "./Layout/UserLayout"
-import { BasicTable } from "./BasicTable"
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { Box, Center, Heading, Text, VStack } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { UserLayout } from './Layout/UserLayout'
+import useAuthUser from '@/hooks/useAuthUser'
+import { Colors } from '@/libs/utils/theme'
 
 export default function Account(session: any) {
   const router = useRouter()
   const supabase = useSupabaseClient()
-  const user = useUser()
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState(null)
-  const [website, setWebsite] = useState(null)
-  const [avatar_url, setAvatarUrl] = useState(null)
+  const { user } = useAuthUser()
 
   // useEffect(() => {
   //   getProfile()
@@ -77,26 +72,24 @@ export default function Account(session: any) {
     if (error) {
       alert(JSON.stringify(error))
     } else {
-      router.push("/signIn")
+      router.push('/signIn')
     }
   }
 
   return (
     <>
       <UserLayout>
-        <Stack>
-          <Heading pl={2} fontSize={"20px"}>
-            自分の活動
-          </Heading>
-          <Box h={"10px"}></Box>
-          {/* <BasicTable></BasicTable> */}
-          <Box h={"30px"}></Box>
-          <Heading pl={2} fontSize={"20px"}>
-            みんなの活動
-          </Heading>
-          <Box h={"10px"}></Box>
-          <BasicTable></BasicTable>
-        </Stack>
+        {/* <Center> */}
+
+        <Center h={'90vh'} w={'100%'}>
+          <VStack>
+            <Heading fontSize={'xl'} color={Colors.fontColor.main}>
+              ようこそ　{user?.user_metadata.full_name}
+            </Heading>
+            <Text>初期表示ページ何置く？ 案あったら教えて！</Text>
+          </VStack>
+        </Center>
+        {/* </Center> */}
       </UserLayout>
       {/* <Button onClick={handleLogOut}>ログアウト</Button> */}
     </>

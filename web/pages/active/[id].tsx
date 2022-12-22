@@ -1,3 +1,8 @@
+import { OriginalModal } from '@/components/common/Modal'
+import { CorpListItem } from '@/components/features/myPage/CorpListItem'
+import { UserLayout } from '@/components/Layout/UserLayout'
+import useAuthUser from '@/hooks/useAuthUser'
+import { supabase } from '@/libs/utils/supabaseClient'
 import {
   Button,
   Center,
@@ -8,44 +13,21 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { OriginalModal } from '@/components/common/Modal'
-import { supabase } from '@/libs/utils/supabaseClient'
-import useAuthUser from '@/hooks/useAuthUser'
 import { Corp } from 'src/types/types'
-import { UserLayout } from '@/components/Layout/UserLayout'
-import { CorpListItem } from '@/components/features/myPage/CorpListItem'
 
-const MyPage = () => {
+interface ActivePageProps {
+  id: string
+  corps: Corp[]
+}
+const ActivePage = (props: ActivePageProps) => {
+  const { id, corps } = props
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user } = useAuthUser()
-  const [corps, setCorps] = useState<Corp[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getProfile()
-  }, [user])
-
-  async function getProfile() {
-    try {
-      setLoading(true)
-      if (!user) throw new Error('No user')
-
-      let { data, error, status } = await supabase.from('corps').select('*').eq('user_id', user?.id)
-
-      if (error && status !== 406) {
-        throw error
-      }
-
-      if (data) {
-        setCorps(data)
-      }
-    } catch (error) {
-      // alert('Error loading user data!')
-    } finally {
-      setLoading(false)
-    }
-  }
-
+    setLoading(false)
+  }, [corps])
 
   return (
     <UserLayout>
@@ -79,5 +61,22 @@ const MyPage = () => {
     </UserLayout>
   )
 }
+export default ActivePage
 
-export default MyPage
+export async function getServerSideProps(context: any) {
+  const id = context.query.id
+
+  let { data, error, status } = await supabase.from('corps').select('*').eq('user_id', id)
+
+  if (!data) {
+    data = []
+  }
+  const corps = data as Corp[]
+
+  return {
+    props: {
+      id: id,
+      corps: corps,
+    },
+  }
+}
