@@ -1,3 +1,4 @@
+import { AddActiveModal } from '@/components/common/AddActiveModal'
 import { DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   TableContainer,
@@ -16,6 +17,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
 
@@ -25,6 +27,7 @@ interface CorpListItemProps {
 
 export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -80,9 +83,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
         _hover={{ bg: 'blue.500', color: 'white' }}
         color={'blue.500'}
         mt={3}
+        onClick={onOpen}
       >
         活動を追加
       </Button>
+          <AddActiveModal isOpen={isOpen} onClose={onClose} corp={corp} />
     </Box>
   )
 }
