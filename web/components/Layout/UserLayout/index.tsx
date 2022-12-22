@@ -3,9 +3,7 @@ import {
   Flex,
   forwardRef,
   Heading,
-  HStack,
   Stack,
-  Text,
   useBreakpointValue,
   useColorModeValue as mode,
   useToast,
@@ -29,9 +27,7 @@ const SidebarLinkComponent = forwardRef(function LogoComponent(
   ref: any
 ) {
   return (
-    // <a ref={ref} {...props}>
     <SidebarLink icon={props.icon}>{props.children}</SidebarLink>
-    // </a>
   )
 })
 
@@ -88,7 +84,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
               <Link href="/">
                 <SidebarLinkComponent icon={<BsBuilding />}>ダッシュボード</SidebarLinkComponent>
               </Link>
-              <Link href="/myPage">
+              <Link href={`/active/${user?.id}`}>
                 <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
               </Link>
               <Link href="/everyone">

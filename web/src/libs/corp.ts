@@ -1,0 +1,9 @@
+// ここに作成
+
+import { Corp } from 'src/types/types'
+
+export const sortCorpOfCreated = (corps: Corp[]) => {
+  const returnCorp: Corp[] = []
+  // ここでcorpsをcreateAtの新しい順に並び替える
+  return returnCorp
+}
