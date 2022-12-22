@@ -40,6 +40,8 @@ export default function SignUp() {
 
   const [showPassword, setShowPassword] = useState(false)
 
+  const [isButtonActive, setIsButtonActive] = useState(true)
+
   function createFullName(firstName: string, lastName: string) {
     const fullName = firstName + lastName
     return fullName
@@ -56,10 +58,13 @@ export default function SignUp() {
     } else {
       setFieldValues({ ...fieldValues, [name]: value })
     }
+
+    // setIs(true)になる条件は
+    // fieldValuesの中身がすべて''ではない
   }
 
   const toast = useToast()
-  const onSubmit = async (e: any) => {
+  const submit = async (e: any) => {
     setIsLoading(true)
     e.preventDefault()
     console.log(fieldValues)
@@ -67,38 +72,56 @@ export default function SignUp() {
     const fullName = createFullName(fieldValues.firstName, fieldValues.lastName)
     const email = fieldValues.email
     const pass = fieldValues.password
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: pass,
-      options: {
-        data: {
-          full_name: fullName,
-          course: fieldValues.course,
-          grade: fieldValues.grade,
-          class: fieldValues.class,
-          class_number: fieldValues.classNumber,
-          student_number: fieldValues.studentNumber,
+
+    if (
+      fieldValues.course !== 0 &&
+      fieldValues.grade !== 0 &&
+      fieldValues.class !== 0 &&
+      fieldValues.classNumber !== 0 &&
+      fieldValues.studentNumber !== 0 &&
+      fieldValues.lastName !== '' &&
+      fieldValues.firstName !== '' &&
+      fieldValues.email !== '' &&
+      fieldValues.password !== ''
+    ) {
+      console.log('全部埋まった')
+      // setIsButtonActive(false)
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: pass,
+        options: {
+          data: {
+            full_name: fullName,
+            course: fieldValues.course,
+            grade: fieldValues.grade,
+            class: fieldValues.class,
+            class_number: fieldValues.classNumber,
+            student_number: fieldValues.studentNumber,
+          },
         },
-      },
-    })
-    if (error) {
-      setIsLoading(false)
-      toast({
-        title: 'エラー',
-        description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
       })
+
+      if (error) {
+        setIsLoading(false)
+        toast({
+          title: 'エラー',
+          description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: 'メールを送信しました！',
+          description: '確認メールを送信しました。ご確認ください！',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+        Router.push('/signIn')
+      }
     } else {
-      toast({
-        title: 'メールを送信しました！',
-        description: '確認メールを送信しました。ご確認ください！',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
-      Router.push('/signIn')
+      console.log('まだ埋まってない')
     }
   }
 
@@ -114,106 +137,111 @@ export default function SignUp() {
             </Stack>
             <Center rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
               <Stack spacing={4} w={'80%'} my={10}>
-                <FormControl id="course" isRequired>
-                  <FormLabel>学部・学科</FormLabel>
-                  <Select placeholder="--" name="course" onChange={handleInputChange}>
-                    <option value="0">情報総合学科</option>
-                    <option value="1">音楽・音響学科</option>
-                  </Select>
-                </FormControl>
-                <HStack justify={'space-between'}>
-                  <FormControl id="grade" isRequired w={'50%'}>
-                    <FormLabel>学年</FormLabel>
-                    <Select placeholder="--" name="grade" onChange={handleInputChange}>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
+                <form action="submit">
+                  <FormControl id="course" isRequired>
+                    <FormLabel>学部・学科</FormLabel>
+                    <Select placeholder="--" name="course" onChange={handleInputChange}>
+                      <option value="1">情報総合学科</option>
+                      <option value="2">音楽・音響学科</option>
                     </Select>
                   </FormControl>
-                  <FormControl id="email" isRequired w={'50%'}>
-                    <FormLabel>クラス</FormLabel>
-                    <Select placeholder="--" name="class" onChange={handleInputChange}>
-                      <option value="0">なし</option>
-                      <option value="1">A</option>
-                      <option value="2">B</option>
-                    </Select>
+                  <HStack justify={'space-between'}>
+                    <FormControl id="grade" isRequired w={'50%'}>
+                      <FormLabel>学年</FormLabel>
+                      <Select placeholder="--" name="grade" onChange={handleInputChange}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </Select>
+                    </FormControl>
+                    <FormControl id="email" isRequired w={'50%'}>
+                      <FormLabel>クラス</FormLabel>
+                      <Select placeholder="--" name="class" onChange={handleInputChange}>
+                        <option value="0">なし</option>
+                        <option value="1">A</option>
+                        <option value="2">B</option>
+                      </Select>
+                    </FormControl>
+                  </HStack>
+                  <HStack justify={'space-between'}>
+                    <FormControl id="classNumber" isRequired w={'40%'}>
+                      <FormLabel>出席番号</FormLabel>
+                      <Input
+                        type="text"
+                        maxLength={2}
+                        name="classNumber"
+                        onChange={handleInputChange}
+                      />
+                    </FormControl>
+                    <FormControl id="studentNumber" isRequired w={'60%'}>
+                      <FormLabel>学籍番号</FormLabel>
+                      <Input
+                        type="text"
+                        name="studentNumber"
+                        onChange={handleInputChange}
+                        maxLength={8}
+                      />
+                    </FormControl>
+                  </HStack>
+                  <HStack justify={'space-between'}>
+                    <FormControl id="lastName" isRequired w={'50%'}>
+                      <FormLabel>苗字</FormLabel>
+                      <Input type="text" name="lastName" onChange={handleInputChange} />
+                    </FormControl>
+                    <FormControl id="firstName" isRequired w={'50%'}>
+                      <FormLabel>名前</FormLabel>
+                      <Input type="text" name="firstName" onChange={handleInputChange} />
+                    </FormControl>
+                  </HStack>
+                  <FormControl id="email" isRequired>
+                    <FormLabel>メールアドレス</FormLabel>
+                    <Input type="email" name="email" onChange={handleInputChange} />
                   </FormControl>
-                </HStack>
-                <HStack justify={'space-between'}>
-                  <FormControl id="classNumber" isRequired w={'40%'}>
-                    <FormLabel>出席番号</FormLabel>
-                    <Input
-                      type="text"
-                      maxLength={2}
-                      name="classNumber"
-                      onChange={handleInputChange}
-                    />
+                  <FormControl id="password" isRequired>
+                    <FormLabel>パスワード</FormLabel>
+                    <InputGroup>
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        onChange={handleInputChange}
+                      />
+                      <InputRightElement h={'full'}>
+                        <Button
+                          variant={'ghost'}
+                          onClick={() => setShowPassword((showPassword) => !showPassword)}
+                        >
+                          {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
                   </FormControl>
-                  <FormControl id="studentNumber" isRequired w={'60%'}>
-                    <FormLabel>学籍番号</FormLabel>
-                    <Input
-                      type="text"
-                      name="studentNumber"
-                      onChange={handleInputChange}
-                      maxLength={8}
-                    />
-                  </FormControl>
-                </HStack>
-                <HStack justify={'space-between'}>
-                  <FormControl id="lastName" isRequired w={'50%'}>
-                    <FormLabel>苗字</FormLabel>
-                    <Input type="text" name="lastName" onChange={handleInputChange} />
-                  </FormControl>
-                  <FormControl id="firstName" isRequired w={'50%'}>
-                    <FormLabel>名前</FormLabel>
-                    <Input type="text" name="firstName" onChange={handleInputChange} />
-                  </FormControl>
-                </HStack>
-                <FormControl id="email" isRequired>
-                  <FormLabel>メールアドレス</FormLabel>
-                  <Input type="email" name="email" onChange={handleInputChange} />
-                </FormControl>
-                <FormControl id="password" isRequired>
-                  <FormLabel>パスワード</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      onChange={handleInputChange}
-                    />
-                    <InputRightElement h={'full'}>
-                      <Button
-                        variant={'ghost'}
-                        onClick={() => setShowPassword((showPassword) => !showPassword)}
-                      >
-                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <Stack spacing={10} pt={2}>
-                  <Button
-                    loadingText="Submitting"
-                    size="lg"
-                    bg={'blue.400'}
-                    color={'white'}
-                    _hover={{
-                      bg: 'blue.500',
-                    }}
-                    onClick={onSubmit}
-                    // isActive={!isLoading}
-                  >
-                    新規登録
-                  </Button>
-                </Stack>
-                <Stack pt={4}>
-                  <Text align={'center'}>
-                    <Link color={'blue.400'} href="/signIn">
-                      ログインはこちら
-                    </Link>
-                  </Text>
-                </Stack>
+                  <Stack spacing={10} pt={2}>
+                    <Button
+                      id="button"
+                      loadingText="Submitting"
+                      size="lg"
+                      bg={'blue.400'}
+                      color={'white'}
+                      _hover={{
+                        bg: 'blue.500',
+                      }}
+                      type={'submit'}
+                      // disabled={isButtonActive}
+                      // onClick={onSubmit}
+                      // isActive={!isLoading}
+                    >
+                      新規登録
+                    </Button>
+                  </Stack>
+                  <Stack pt={4}>
+                    <Text align={'center'}>
+                      <Link color={'blue.400'} href="/signIn">
+                        ログインはこちら
+                      </Link>
+                    </Text>
+                  </Stack>
+                </form>
               </Stack>
             </Center>
           </>
