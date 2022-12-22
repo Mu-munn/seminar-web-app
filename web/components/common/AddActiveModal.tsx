@@ -75,10 +75,10 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
           </VStack>
           <VStack justify={'center'} spacing="24px">
             <FormControl mt={'50px'} width={'auto'}>
-              <FormLabel>実施日時</FormLabel>
+              <FormLabel>実施日</FormLabel>
               <Input
                 variant="filled"
-                placeholder="例：2022/12/22"
+                placeholder="例：2022年12月22日"
                 w={'400px'}
                 onChange={(e) => setCorpName(e.target.value)}
               />
@@ -100,7 +100,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
               <FormLabel>公欠願書提出日</FormLabel>
               <Input
                 variant="filled"
-                placeholder="例：2022/12/10"
+                placeholder="例：2022年12月10日"
                 w={'400px'}
                 onChange={(e) => setCorpName(e.target.value)}
               />

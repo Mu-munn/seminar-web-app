@@ -61,9 +61,9 @@ export const CorpListItem = (props: CorpListItemProps) => {
           <Thead>
             <Tr>
               <Th>活動種類</Th>
-              <Th>参加日</Th>
+              <Th>実施日</Th>
               <Th>実施場所</Th>
-              <Th>公欠提出日</Th>
+              <Th>公欠願書提出日</Th>
               <Th>結果</Th>
               <Th>公欠許可</Th>
               <Th>報告書受領日</Th>
