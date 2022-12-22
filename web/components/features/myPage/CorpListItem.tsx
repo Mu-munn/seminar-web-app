@@ -16,11 +16,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  useToast
+  useToast,
+  useDisclosure
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
 import { supabase } from '@/libs/utils/supabaseClient'
-import Router from 'next/router'
+import { DeleteConfirm} from '@/components/common/Modal/DeleteModal'
 
 interface CorpListItemProps {
   corp: Corp
@@ -29,26 +30,8 @@ interface CorpListItemProps {
 export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
   const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
-const onDelete =  async (e: any) =>{
-  try{
-    const { data, error } = await supabase
-    .from('corps')
-    .delete()
-    .eq('corp_id', corp.corp_id)
-  }catch{
-    toast({
-      title: 'エラー',
-      description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    })
-  }finally{
-    Router.reload()
-  }
-
-}
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -63,8 +46,9 @@ const onDelete =  async (e: any) =>{
             <MenuItem icon={<EditIcon />}>
               編集する
             </MenuItem>
-            <MenuItem color={'red.600'} onClick={onDelete} icon={<DeleteIcon />}>
+            <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
               削除する
+              <DeleteConfirm corp_id={corp.corp_id} isOpen={isOpen} onClose={onClose} ></DeleteConfirm>
             </MenuItem>
           </MenuList>
         </Menu>
