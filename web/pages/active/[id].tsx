@@ -24,18 +24,31 @@ const ActivePage = (props: ActivePageProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user } = useAuthUser()
   const [loading, setLoading] = useState(true)
+  const [isMyPage, setIsMyPage] = useState(false)
 
   useEffect(() => {
     setLoading(false)
   }, [corps])
 
+  useEffect(() => {
+    if (user) user.id === corps[0].user_id ? setIsMyPage(true) : setIsMyPage(false)
+  }, [user])
+
   return (
     <UserLayout>
       <Stack>
         <HStack justify={'space-between'} mb={10}>
-          <Heading pl={2} fontSize={'20px'}>
-            自分の活動
-          </Heading>
+          {isMyPage ? (
+            <Heading pl={2} fontSize={'20px'}>
+              自分の活動
+            </Heading>
+          ) : (
+            <Heading pl={2} fontSize={'20px'}>
+              {/* 最後にここで、profile.full_nameで表示 */}
+              {corps[0].user_id + 'さんの活動'}
+            </Heading>
+          )}
+
           <Button
             color={'blue.600'}
             onClick={onOpen}
@@ -67,12 +80,14 @@ export async function getServerSideProps(context: any) {
   const id = context.query.id
 
   let { data, error, status } = await supabase.from('corps').select('*').eq('user_id', id)
+  // ここで、profileテーブルから、corp.user_idと同じuserのデータを取得する（corp_nameを取得するため）
 
   if (!data) {
     data = []
   }
   const corps = data as Corp[]
 
+  // 次にここでprofileをデータとして渡す
   return {
     props: {
       id: id,
