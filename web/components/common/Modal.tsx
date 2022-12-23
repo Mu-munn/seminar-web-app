@@ -13,10 +13,16 @@ import {
   Text,
   FormLabel,
   IconButton,
+  useToast
 } from '@chakra-ui/react'
 import Router from 'next/router'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
+import { Corp } from 'src/types/types'
+
+interface CorpListItemProps {
+  corp: Corp
+}
 
 export const OriginalModal = ({ isOpen, onClose }: any) => {
   const [corpName, setCorpName] = useState('')
