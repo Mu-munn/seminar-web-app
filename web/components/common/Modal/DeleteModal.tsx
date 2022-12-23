@@ -49,10 +49,8 @@ export const DeleteConfirm=({ isOpen, onClose, corp_id }: any) => {
               </Text>
             </VStack>
             <VStack paddingTop={'3%'} paddingBottom={'2%'}>
-              <p >
                 活動情報も消えてしまいます。
                 本当に削除しますか？
-              </p>
             </VStack>
           </ModalBody>
           <ModalFooter justifyContent="center">
