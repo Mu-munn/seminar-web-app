@@ -1,9 +1,10 @@
 import {
   Box,
+  Button,
+  Center,
   Flex,
   forwardRef,
   Heading,
-  HStack,
   Stack,
   Text,
   useBreakpointValue,
@@ -20,6 +21,7 @@ import { SidebarLink } from './SidebarLink'
 import { UserInfo } from './UserInfo'
 import { supabase } from '../../../src/libs/utils/supabaseClient'
 import useAuthUser from '@/hooks/useAuthUser'
+import useProfile from '@/hooks/useProfile'
 
 const SidebarLinkComponent = forwardRef(function LogoComponent(
   props: {
@@ -28,11 +30,7 @@ const SidebarLinkComponent = forwardRef(function LogoComponent(
   },
   ref: any
 ) {
-  return (
-    // <a ref={ref} {...props}>
-    <SidebarLink icon={props.icon}>{props.children}</SidebarLink>
-    // </a>
-  )
+  return <SidebarLink icon={props.icon}>{props.children}</SidebarLink>
 })
 
 interface AdminLayoutProps {
@@ -45,6 +43,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
   const router = useRouter()
   const toast = useToast()
   const { user } = useAuthUser()
+  const { profile } = useProfile()
 
   const isClosable = useBreakpointValue({ base: true, md: false })
 
@@ -79,20 +78,42 @@ export const UserLayout = (props: AdminLayoutProps) => {
         position="fixed"
       >
         <Box fontSize="sm" lineHeight="tall">
-          <Heading fontSize="40px" fontWeight="bold" pb="1" w={'100%'} textAlign={'center'} pt={3}>
+          <Heading fontSize="40px" fontWeight="bold" pb="" w={'100%'} textAlign={'center'} pt={3}>
             MINORU
           </Heading>
+          {profile?.isAdmin && <Text textAlign={'center'}>管理者</Text>}
+
+          {profile?.isAdmin && (
+            <Center w={'100%'} mt={7}>
+              <Button
+                display="block"
+                transition="background 0.1s"
+                rounded="xl"
+                _hover={{ bg: 'whiteAlpha.200' }}
+                bg={'white'}
+                color={'gray'}
+                w={'80%'}
+              >
+                教員を招待する
+              </Button>
+            </Center>
+          )}
 
           <ScrollArea pt="5" pb="6" w={'100%'}>
             <Stack pb="6" w={'100%'}>
               <Link href="/">
                 <SidebarLinkComponent icon={<BsBuilding />}>ダッシュボード</SidebarLinkComponent>
               </Link>
-              <Link href="/myPage">
-                <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
-              </Link>
+              {!profile?.isAdmin && (
+                <Link href={`/active/${user?.id}`}>
+                  <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
+                </Link>
+              )}
+
               <Link href="/everyone">
-                <SidebarLinkComponent icon={<BsLightbulb />}>みんなの活動</SidebarLinkComponent>
+                <SidebarLinkComponent icon={<BsLightbulb />}>
+                  {profile?.isAdmin ? '生徒の頑張り' : 'みんなの活動'}
+                </SidebarLinkComponent>
               </Link>
             </Stack>
             <Box position="absolute" bottom="8" w={'100%'}>
@@ -103,7 +124,6 @@ export const UserLayout = (props: AdminLayoutProps) => {
                   transition="background 0.1s"
                   rounded="xl"
                   _hover={{ bg: 'whiteAlpha.200' }}
-                  // whiteSpace="nowrap"
                   bg={'linear-gradient(145deg, #284a75, #2f588b)'}
                   boxShadow={'20px 20px 60px #25466f,-20px -20px 60px #335e96'}
                 >

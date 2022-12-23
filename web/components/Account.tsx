@@ -3,7 +3,7 @@ import { Box, Center, Heading, Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { UserLayout } from './Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
-import { Colors } from '@/libs/utils/theme'
+import { themeColors } from '@/libs/utils/theme'
 
 export default function Account(session: any) {
   const router = useRouter()
@@ -83,7 +83,7 @@ export default function Account(session: any) {
 
         <Center h={'90vh'} w={'100%'}>
           <VStack>
-            <Heading fontSize={'xl'} color={Colors.fontColor.main}>
+            <Heading fontSize={'xl'} color={themeColors.fontColor.main}>
               ようこそ　{user?.user_metadata.full_name}
             </Heading>
             <Text>初期表示ページ何置く？ 案あったら教えて！</Text>

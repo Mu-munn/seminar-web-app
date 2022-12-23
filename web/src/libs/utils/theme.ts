@@ -1,6 +1,6 @@
-export const Colors = {
+export const themeColors = {
   background: {
-    main: 'blue',
+    main: '#2c5282',
   },
   fontColor: {
     main: '#363636',
