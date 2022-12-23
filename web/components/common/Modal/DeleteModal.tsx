@@ -49,15 +49,18 @@ export const DeleteConfirm=({ isOpen, onClose, corp_id }: any) => {
               </Text>
             </VStack>
             <VStack paddingTop={'3%'} paddingBottom={'2%'}>
-                活動情報も消えてしまいます。
+              <p>
+              活動情報も消えてしまいます。
                 本当に削除しますか？
+              </p>
+              
             </VStack>
           </ModalBody>
-          <ModalFooter justifyContent="center">
-            <Button　w={'45%'} onClick={onDelete} marginRight={'2%'} backgroundColor={'red.300'} color={'white'}>
+          <ModalFooter justifyContent="center"　paddingBottom={'4%'}>
+            <Button　w={'40%'} onClick={onDelete} marginRight={'2%'} backgroundColor={'red.300'} color={'white'}>
               削除
             </Button>
-            <Button w={'45%'} onClick={onClose} marginLeft={'2%'} >
+            <Button w={'40%'} onClick={onClose} marginLeft={'2%'} >
               キャンセル
             </Button>
           </ModalFooter>
