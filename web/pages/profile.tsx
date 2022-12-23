@@ -10,9 +10,12 @@ import {
   Spacer,
   Stack,
   VStack,
+  useToast
 } from '@chakra-ui/react'
 import { UserLayout } from '@/components/Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
+import { supabase } from '@/libs/utils/supabaseClient'
+import Router from 'next/router'
 
 interface UserCreate {
   fullName: string // フルネーム
@@ -26,25 +29,97 @@ interface UserCreate {
 export default function Profile() {
   const { user, isLoading, token } = useAuthUser()
 
-  const [fullName, setFullName] = useState<string>()
-  const [course, setCourse] = useState<number>()
-  const [grade, setGrade] = useState<number>()
-  const [classes, setClasses] = useState<string>()
-  const [classNumber, setClassNumber] = useState<number>()
-  const [studentNumber, setStudentNumber] = useState<number>()
+  const [fullName, setFullName] = useState<string>('')
+  const [course, setCourse] = useState<number>(0)
+  const [grade, setGrade] = useState<number>(0)
+  const [classes, setClasses] = useState<string>('')
+  const [classNumber, setClassNumber] = useState<number>(0)
+  const [studentNumber, setStudentNumber] = useState<number>(0)
 
   useEffect(() => {
-    setFullName(user?.user_metadata.full_name)
-    setCourse(user?.user_metadata.course)
-    setGrade(user?.user_metadata.grade)
-    setClasses(user?.user_metadata.class)
-    setClassNumber(user?.user_metadata.class_number)
-    setStudentNumber(user?.user_metadata.student_number)
+    if(user)
+      getProfile(user.id);
   }, [user])
+  const toast = useToast()
+
+  const updateProfile = async ({
+    fullName,
+    course,
+    grade,
+    classes,
+    classNumber,
+    studentNumber,
+    user_id,
+  }: {
+    fullName: UserCreate['fullName']
+    course: UserCreate['course']
+    grade: UserCreate['grade']
+    classes: UserCreate['class']
+    classNumber: UserCreate['classNumber']
+    studentNumber: UserCreate['studentNumber']
+    user_id: String
+  })=>{
+    try {
+      if (!user_id) throw new Error('No user')
+  
+      const updates = {
+        id:user_id,
+        full_name:fullName,
+        course:course,
+        grade:grade,
+        class:classes,
+        class_number:classNumber,
+        student_number:studentNumber,
+      }
+      
+      let { error } = await supabase.from('profiles').upsert(updates).eq('id',user_id)
+      if (error) throw error
+        toast({
+          title: 'SUCCESS!!',
+          description: 'Profileを更新しました',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+        Router.reload()
+      } catch (error) {
+        toast({
+          title: 'ERROR!!',
+          description: '更新に失敗しました。もう一度お試しください',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      } finally {
+  
+      }
+  }
+
+  const getProfile = async (userid:string)=>{
+    let { data } = await supabase.from('profiles').select('full_name,course,grade,class,class_number,student_number').eq('id',userid)
+    if(data){
+      setFullName(data[0].full_name)
+      setCourse(data[0].course)
+      setGrade(data[0].grade)
+      setClasses(data[0].class)
+      setClassNumber(data[0].class_number)
+      setStudentNumber(data[0].student_number)
+    }
+  }
 
   const submit = async (e: any) => {
     e.preventDefault()
-    // TODO: profile update
+    const status ={
+      fullName:fullName,
+      course:course,
+      grade:grade,
+      classes:classes,
+      classNumber:classNumber,
+      studentNumber:studentNumber,
+      user_id:user!.id,
+    };
+    
+    updateProfile(status)
   }
 
   return (
