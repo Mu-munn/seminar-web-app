@@ -2,8 +2,10 @@ import { OriginalModal } from '@/components/common/Modal'
 import { CorpListItem } from '@/components/features/myPage/CorpListItem'
 import { UserLayout } from '@/components/Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
+import useProfile from '@/hooks/useProfile'
 import { supabase } from '@/libs/utils/supabaseClient'
 import {
+  Box,
   Button,
   Center,
   CircularProgress,
@@ -13,11 +15,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { Corp } from 'src/types/types'
+import { Corp, Profile } from 'src/types/types'
 
 interface ActivePageProps {
   id: string
   corps: Corp[]
+  // propsにprofileの型を追加
+  profile: Profile
 }
 const ActivePage = (props: ActivePageProps) => {
   const { id, corps } = props
@@ -25,6 +29,7 @@ const ActivePage = (props: ActivePageProps) => {
   const { user } = useAuthUser()
   const [loading, setLoading] = useState(true)
   const [isMyPage, setIsMyPage] = useState(false)
+  const { profile } = useProfile()
 
   useEffect(() => {
     setLoading(false)
@@ -33,6 +38,10 @@ const ActivePage = (props: ActivePageProps) => {
   useEffect(() => {
     if (user) user.id === corps[0].user_id ? setIsMyPage(true) : setIsMyPage(false)
   }, [user])
+
+  useEffect(() => {
+    console.log(profile)
+  }, [profile])
 
   return (
     <UserLayout>
