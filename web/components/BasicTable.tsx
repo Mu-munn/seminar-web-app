@@ -10,40 +10,40 @@ type Book = {
 
 const books: Book[] = activeData
 
-const columns: ColumnDef<Book, any>[] = [
-  {
-    accessorKey: 'title',
-    header: '名前',
-  },
-  {
-    accessorKey: 'author',
-    header: '会社',
-  },
-]
+// const columns: ColumnDef<Book, any>[] = [
+//   {
+//     accessorKey: 'title',
+//     header: '名前',
+//   },
+//   {
+//     accessorKey: 'author',
+//     header: '会社',
+//   },
+// ]
 
-export const BasicTable: React.FC = () => {
-  const table = useReactTable<Book>({
-    data: books,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
+export const BasicTable = () => {
+  // const table = useReactTable<Book>({
+  //   data: books,
+  //   columns,
+  //   getCoreRowModel: getCoreRowModel(),
+  // })
   return (
     <TableContainer w={'90%'}>
       <Table size={'sm'}>
         <Thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Tr key={headerGroup.id}>
-              <Th w={'20%'}>名前</Th>
-              <Th>企業一覧</Th>
-              {/* {headerGroup.headers.map((header) => (
+          {/* {table.getHeaderGroups().map((headerGroup) => ( */}
+          <Tr key={'1'}>
+            <Th w={'20%'}>名前</Th>
+            <Th>企業一覧</Th>
+            {/* {headerGroup.headers.map((header) => (
                 <Th key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
                 </Th>
               ))} */}
-            </Tr>
-          ))}
+          </Tr>
+          {/* ))} */}
         </Thead>
         <Tbody>
           {books.map((book) => (
