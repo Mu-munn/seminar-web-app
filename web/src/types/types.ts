@@ -4,11 +4,6 @@ export interface Active {
   corpName: string
 }
 
-export interface Corp {
-  corp_id: string
-  user_id: string
-  corp_name: string
-}
 
 export interface Profile {
   id: string
