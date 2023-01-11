@@ -11,9 +11,10 @@ import { useEffect, useState } from 'react'
 import { OriginalModal } from '@/components/common/Modal'
 import { supabase } from '@/libs/utils/supabaseClient'
 import useAuthUser from '@/hooks/useAuthUser'
-import { Corp } from 'src/types/types'
+
 import { UserLayout } from '@/components/Layout/UserLayout'
 import { CorpListItem } from '@/components/features/myPage/CorpListItem'
+import { Corp } from 'src/types/corp'
 
 const MyPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()

@@ -1,13 +1,13 @@
 import useProfile from '@/hooks/useProfile'
 import { Avatar, Box, HStack, Text, useColorModeValue as mode } from '@chakra-ui/react'
-import useAuthUser from '../../../src/hooks/useAuthUser'
+import useAuthUser from '@/hooks/useAuthUser'
 
 export const UserInfo = () => {
   const { user } = useAuthUser()
   const { profile } = useProfile()
 
   const userName: string = profile?.full_name ?? ''
-  const email = user !== undefined && user !== null && user.email
+  const email = user?.email ?? ''
 
   return (
     <HStack display="inline-flex">
