@@ -22,6 +22,7 @@ import {
 import { Corp } from 'src/types/corp'
 import { supabase } from '@/libs/utils/supabaseClient'
 import { DeleteConfirm } from '@/components/common/Modal/DeleteModal'
+import { AddActiveModal } from '@/components/common/Modal/AddActiveModal'
 
 interface CorpListItemProps {
   corp: Corp
@@ -94,6 +95,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
       >
         活動を追加
       </Button>
+      <AddActiveModal isOpen={isOpen} onClose={onClose} corp={corp} />
     </Box>
   )
 }
