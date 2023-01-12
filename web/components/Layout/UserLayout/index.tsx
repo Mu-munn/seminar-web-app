@@ -104,8 +104,13 @@ export const UserLayout = (props: AdminLayoutProps) => {
               <Link href="/">
                 <SidebarLinkComponent icon={<BsBuilding />}>ダッシュボード</SidebarLinkComponent>
               </Link>
-              {!profile?.isAdmin && (
-                <Link href={`/active/${user?.id}`}>
+              {!profile?.isAdmin && user && (
+                <Link
+                  href={`/active/${user.id}`}
+                  onClick={() => {
+                    router.push(`/active/${user.id}`)
+                  }}
+                >
                   <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
                 </Link>
               )}

@@ -4,6 +4,9 @@ import { UserLayout } from '@/components/Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
 import { useCorps } from '@/hooks/useCorps'
 import useProfile from '@/hooks/useProfile'
+import { useProfileFromUserId } from '@/hooks/useProfileFromUserId'
+import { isTrue } from '@/libs/util'
+
 import { supabase } from '@/libs/utils/supabaseClient'
 import {
   Box,
@@ -15,6 +18,7 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Corp } from 'src/types/corp'
 import { Profile } from 'src/types/types'
@@ -32,32 +36,41 @@ const ActivePage = () => {
   const { user } = useAuthUser()
   const [loading, setLoading] = useState(true)
   const [isMyPage, setIsMyPage] = useState(false)
-  const corps = useCorps()
-  const { profile } = useProfile()
+
+  // const { profile } = useProfile()
+  const router = useRouter()
+  const { id } = router.query
+  const userId = { id }.id as string
+  const corps = useCorps(userId)
+  const userProfile = useProfileFromUserId(userId)
+  const isSelfAccount = user && isTrue(userId, user.id)
 
   return (
     <UserLayout>
       <Stack>
         <HStack justify={'space-between'} mb={10}>
-          {isMyPage ? (
+          {isSelfAccount ? (
             <Heading pl={2} fontSize={'20px'}>
               自分の活動
             </Heading>
           ) : (
             <Heading pl={2} fontSize={'20px'}>
-              {profile?.full_name + '　さんの活動' ?? ''}
+              {userProfile?.full_name + ' さんの活動' ?? ''}
             </Heading>
           )}
 
-          <Button
-            color={'blue.600'}
-            onClick={onOpen}
-            borderRadius={'50px'}
-            bg={'#ededed'}
-            boxShadow={'20px 20px 60px #bebebe,-20px -20px 60px #ffffff'}
-          >
-            新しい会社を追加する
-          </Button>
+          {isSelfAccount && (
+            <Button
+              color={'blue.600'}
+              onClick={onOpen}
+              borderRadius={'50px'}
+              bg={'#ededed'}
+              boxShadow={'20px 20px 60px #bebebe,-20px -20px 60px #ffffff'}
+            >
+              新しい会社を追加する
+            </Button>
+          )}
+
           <OriginalModal isOpen={isOpen} onClose={onClose}></OriginalModal>
         </HStack>
 
