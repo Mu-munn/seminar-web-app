@@ -49,13 +49,13 @@ const ActivePage = () => {
     <UserLayout>
       <Stack>
         <HStack justify={'space-between'} mb={10}>
-          {isMyPage ? (
+          {isSelfAccount ? (
             <Heading pl={2} fontSize={'20px'}>
               自分の活動
             </Heading>
           ) : (
             <Heading pl={2} fontSize={'20px'}>
-              {userProfile?.full_name + '　さんの活動' ?? ''}
+              {userProfile?.full_name + ' さんの活動' ?? ''}
             </Heading>
           )}
 

@@ -25,10 +25,11 @@ export const BasicTable = (props: BasicTableProps) => {
           {everyone.map((e) => (
             <Tr
               key={e.id}
-              _hover={{ bg: 'red.100', transition: '0.2s' }}
+              _hover={{ bg: 'gray.200', transition: '0.2s' }}
               onClick={() => {
                 router.push(`active/${e.id}`)
               }}
+              cursor={'pointer'}
             >
               <Td>{e.full_name}</Td>
               <Td>
