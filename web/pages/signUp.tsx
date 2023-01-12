@@ -40,8 +40,6 @@ export default function SignUp() {
 
   const [showPassword, setShowPassword] = useState(false)
 
-  const [isButtonActive, setIsButtonActive] = useState(true)
-
   function createFullName(firstName: string, lastName: string) {
     const fullName = firstName + lastName
     return fullName
@@ -64,6 +62,7 @@ export default function SignUp() {
   }
 
   const toast = useToast()
+
   const submit = async (e: any) => {
     setIsLoading(true)
     e.preventDefault()
@@ -73,19 +72,6 @@ export default function SignUp() {
     const email = fieldValues.email
     const pass = fieldValues.password
 
-    if (
-      fieldValues.course !== 0 &&
-      fieldValues.grade !== 0 &&
-      fieldValues.class !== 0 &&
-      fieldValues.classNumber !== 0 &&
-      fieldValues.studentNumber !== 0 &&
-      fieldValues.lastName !== '' &&
-      fieldValues.firstName !== '' &&
-      fieldValues.email !== '' &&
-      fieldValues.password !== ''
-    ) {
-      console.log('全部埋まった')
-      // setIsButtonActive(false)
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: pass,
@@ -120,9 +106,6 @@ export default function SignUp() {
         })
         Router.push('/signIn')
       }
-    } else {
-      console.log('まだ埋まってない')
-    }
   }
 
   return (
@@ -137,7 +120,7 @@ export default function SignUp() {
             </Stack>
             <Center rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
               <Stack spacing={4} w={'80%'} my={10}>
-                <form action="submit">
+                <form onSubmit={(e)=>{submit(e)}}>
                   <FormControl id="course" isRequired>
                     <FormLabel>学部・学科</FormLabel>
                     <Select placeholder="--" name="course" onChange={handleInputChange}>
@@ -227,9 +210,6 @@ export default function SignUp() {
                         bg: 'blue.500',
                       }}
                       type={'submit'}
-                      // disabled={isButtonActive}
-                      // onClick={onSubmit}
-                      // isActive={!isLoading}
                     >
                       新規登録
                     </Button>
