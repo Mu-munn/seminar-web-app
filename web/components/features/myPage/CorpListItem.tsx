@@ -30,7 +30,7 @@ import { useProfileFromUserId } from '@/hooks/useProfileFromUserId'
 import { isTrue } from '@/libs/util'
 import { useActivesFromCorpId } from '@/hooks/useActivesFromCorpId'
 import { useEffect, useState } from 'react'
-import { Active } from 'src/types/types'
+import { Active } from 'src/types/active'
 
 interface CorpListItemProps {
   corp: Corp
@@ -94,20 +94,14 @@ export const CorpListItem = (props: CorpListItemProps) => {
                 {actives.map((active) => {
                   return (
                     <Tr
-                      key={active.corpId}
+                      key={active.corp_id}
                       _hover={{ bg: 'red.100', transition: '0.2s' }}
                       onClick={() => {
                         router.push(`active/${e.id}`)
                       }}
                     >
-                      <Td>{active.}</Td>
-                      <Td>
-                        {e.corps.map((corp) => (
-                          <Tag key={corp.corp_id} mr={2}>
-                            {corp.corp_name}
-                          </Tag>
-                        ))}
-                      </Td>
+                      <Td>{active.active_name}</Td>
+                      <Td>a</Td>
                     </Tr>
                   )
                 })}
