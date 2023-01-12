@@ -31,6 +31,7 @@ import { isTrue } from '@/libs/util'
 import { useActivesFromCorpId } from '@/hooks/useActivesFromCorpId'
 import { useEffect, useState } from 'react'
 import { Active } from 'src/types/active'
+import { ActiveClass } from '@/libs/active'
 
 interface CorpListItemProps {
   corp: Corp
@@ -47,7 +48,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const userId = { id }.id as string
   // const userProfile = useProfileFromUserId(userId)
   const isSelfAccount = user && isTrue(userId, user.id)
-  const actives = useActivesFromCorpId('cdff879b-d769-4c2c-91c0-9bf9b9679166')
+  const actives: Active[] = useActivesFromCorpId(corp.corp_id)
   // console.log(actives)
 
   return (
@@ -75,41 +76,49 @@ export const CorpListItem = (props: CorpListItemProps) => {
         )}
       </HStack>
 
-      <TableContainer w={'100%'}>
-        <Table size={'sm'}>
-          <Thead>
-            <Tr>
-              <Th>活動種類</Th>
-              <Th>参加日</Th>
-              <Th>実施場所</Th>
-              <Th>公欠提出日</Th>
-              <Th>結果</Th>
-              <Th>公欠許可</Th>
-              <Th>報告書受領日</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {actives && actives.length > 0 && (
-              <>
-                {actives.map((active) => {
-                  return (
-                    <Tr
-                      key={active.corp_id}
-                      _hover={{ bg: 'red.100', transition: '0.2s' }}
-                      onClick={() => {
-                        router.push(`active/${e.id}`)
-                      }}
-                    >
-                      <Td>{active.active_name}</Td>
-                      <Td>a</Td>
-                    </Tr>
-                  )
-                })}
-              </>
-            )}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      {actives.length > 0 ? (
+        <TableContainer w={'100%'}>
+          <Table size={'sm'}>
+            <Thead>
+              <Tr>
+                <Th>活動種類</Th>
+                <Th>参加日</Th>
+                <Th>実施場所</Th>
+                <Th>公欠提出日</Th>
+                <Th>結果</Th>
+                <Th>公欠許可</Th>
+                <Th>報告書受領日</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {actives && actives.length > 0 && (
+                <>
+                  {actives.map((active) => {
+                    return (
+                      <Tr
+                        key={active.corp_id}
+                        _hover={{ bg: 'white', transition: '0.2s' }}
+                        onClick={() => {}}
+                        cursor={'pointer'}
+                      >
+                        <Td>{active.active_name}</Td>
+                        <Td>{active.active_at.toString()}</Td>
+                        <Td>{active.active_place}</Td>
+                        <Td>{active.absence_submit_at?.toString()}</Td>
+                        <Td>{ActiveClass.witchSelectionResult(active.selection_result)}</Td>
+                      </Tr>
+                    )
+                  })}
+                </>
+              )}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Text pl={3} fontSize={'sm'} textAlign={'left'}>
+          活動はありません
+        </Text>
+      )}
 
       {isSelfAccount && (
         <Button

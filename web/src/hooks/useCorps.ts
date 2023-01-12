@@ -7,8 +7,8 @@ export const useCorps = (userId?: string) => {
   const [corps, setCorps] = useState<any>()
 
   useEffect(() => {
-    profile && fetchCorps(userId)
-  }, [profile])
+    fetchCorps(userId)
+  }, [userId])
 
   const fetchCorps = async (userId?: string) => {
     const profileId = profile && profile.id
