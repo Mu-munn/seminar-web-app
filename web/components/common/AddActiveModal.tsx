@@ -52,7 +52,6 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
           right={'20'}
           top={'10'}
         ></ModalButton>
-
         <ModalBody pb={6}>
           <VStack justify={'center'} spacing="24px">
             <FormControl mt={'50px'} width={'auto'}>
