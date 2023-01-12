@@ -77,9 +77,11 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
               <FormLabel>実施日</FormLabel>
               <Input
                 variant="filled"
-                placeholder="例：2022年12月22日"
+                placeholder="Select Date and Time"
                 w={'400px'}
                 onChange={(e) => setCorpName(e.target.value)}
+                type="datetime-local"
+                size="md"
               />
             </FormControl>
           </VStack>
