@@ -42,7 +42,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
     }
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={'3xl'} isCentered={true}>
+    <Modal isOpen={isOpen} onClose={onClose} size={'2xl'} isCentered={false}>
       <ModalOverlay />
       <ModalContent>
         <ModalButton
