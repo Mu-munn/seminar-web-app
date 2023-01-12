@@ -32,6 +32,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isActiceOpen, onOpen: onActiveOpen, onClose: onActiveClose } = useDisclosure()
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -92,10 +93,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
         _hover={{ bg: 'blue.500', color: 'white' }}
         color={'blue.500'}
         mt={3}
+        onClick={onActiveOpen}
       >
         活動を追加
       </Button>
-      <AddActiveModal isOpen={isOpen} onClose={onClose} corp={corp} />
+      <AddActiveModal isOpen={isActiceOpen} onClose={onActiveClose} corp={corp} />
     </Box>
   )
 }
