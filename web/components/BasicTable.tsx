@@ -1,4 +1,5 @@
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tag } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { EveryOne } from 'src/types/everyone'
 
@@ -8,6 +9,8 @@ interface BasicTableProps {
 
 export const BasicTable = (props: BasicTableProps) => {
   const { everyone } = props
+  const router = useRouter()
+  console.log(everyone)
 
   return (
     <TableContainer w={'90%'}>
@@ -20,18 +23,22 @@ export const BasicTable = (props: BasicTableProps) => {
         </Thead>
         <Tbody>
           {everyone.map((e) => (
-            <>
-              <Tr _hover={{ bg: 'red.100', transition: '0.2s' }}>
-                <Td>{e.full_name}</Td>
-                <Td>
-                  {e.corps.map((corp) => (
-                    <Tag key={corp.corp_id} mr={2}>
-                      {corp.corp_name}
-                    </Tag>
-                  ))}
-                </Td>
-              </Tr>
-            </>
+            <Tr
+              key={e.id}
+              _hover={{ bg: 'red.100', transition: '0.2s' }}
+              onClick={() => {
+                router.push(`active/${e.id}`)
+              }}
+            >
+              <Td>{e.full_name}</Td>
+              <Td>
+                {e.corps.map((corp) => (
+                  <Tag key={corp.corp_id} mr={2}>
+                    {corp.corp_name}
+                  </Tag>
+                ))}
+              </Td>
+            </Tr>
           ))}
         </Tbody>
       </Table>
