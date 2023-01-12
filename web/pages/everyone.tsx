@@ -1,5 +1,5 @@
 import { UserLayout } from "../components/Layout/UserLayout"
-import { Heading } from "@chakra-ui/react"
+import { Box, Heading, Stack, Text } from "@chakra-ui/react"
 import { BasicTable } from "@/components/BasicTable"
 import { supabase } from '@/libs/utils/supabaseClient'
 import useProfile from "@/hooks/useProfile"
@@ -9,10 +9,10 @@ type Book ={
   corp_name: string[]
 }
 
-const EveryOne = ({ foo }: any) => {
+const EveryOne = () => {
   let corpdata: Book[];
+  const {profile} = useProfile();
   const getInfomation = async()=>{
-    const {profile} = await useProfile();
     let { data } = await supabase
       .from('profiles')
       .select('id,full_name,class_number,corps(corp_id,corp_name)')
