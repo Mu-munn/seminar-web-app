@@ -88,7 +88,7 @@ export default function SignUp() {
   const submit = async (e: any) => {
     setIsLoading(true)
     e.preventDefault()
-    console.log(fieldValues)
+    // console.log(fieldValues)
 
     const fullName = createFullName(fieldValues.firstName, fieldValues.lastName)
     const email = fieldValues.email
@@ -128,7 +128,7 @@ export default function SignUp() {
         title: 'メールを送信しました！',
         description: '確認メールを送信しました。ご確認ください！',
         status: 'success',
-        duration: 9000,
+        duration: 1500,
         isClosable: true,
       })
       Router.push('/signIn')
