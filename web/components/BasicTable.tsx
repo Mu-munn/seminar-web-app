@@ -10,7 +10,6 @@ interface BasicTableProps {
 export const BasicTable = (props: BasicTableProps) => {
   const { everyone } = props
   const router = useRouter()
-  console.log(everyone)
 
   return (
     <TableContainer w={'90%'}>

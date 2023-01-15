@@ -8,6 +8,7 @@ import { useProfileFromUserId } from '@/hooks/useProfileFromUserId'
 import { isTrue } from '@/libs/util'
 
 import { supabase } from '@/libs/utils/supabaseClient'
+import { fetcher } from '@/libs/utils/useSWR'
 import {
   Box,
   Button,
@@ -23,6 +24,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Corp } from 'src/types/corp'
 import { Profile } from 'src/types/types'
 // import { Corp, Profile } from 'src/types/types'
+import useSWR from 'swr'
 
 interface ActivePageProps {
   id: string
@@ -42,7 +44,10 @@ const ActivePage = () => {
   const router = useRouter()
   // const routerId = router.query.id
   // const userId = { id }.id
-  const corps = useCorps(routerId)
+  // const corps = useCorps(routerId)
+  const { data: corps, error } = useSWR(`/api/corps/${routerId}`, fetcher)
+  console.log(corps)
+
   const userProfile = useProfileFromUserId(routerId)
   const isSelfAccount = user && isTrue(routerId, user.id)
 
@@ -83,7 +88,7 @@ const ActivePage = () => {
         </HStack>
 
         {corps ? (
-          corps.map((corp) => {
+          corps.map((corp: Corp) => {
             return <CorpListItem key={corp.corp_id} corp={corp} />
           })
         ) : (

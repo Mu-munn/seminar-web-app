@@ -7,15 +7,15 @@ import {
   Button,
   ModalFooter,
   Text,
-  IconButton,
   useToast,
 } from '@chakra-ui/react'
-import Router from 'next/router'
-import { IoMdClose } from 'react-icons/io'
 import { supabase } from '@/libs/utils/supabaseClient'
+import { mutate } from 'swr'
+import useAuthUser from '@/hooks/useAuthUser'
 
 export const DeleteConfirm = ({ isOpen, onClose, corp_id }: any) => {
   const toast = useToast()
+  const { user } = useAuthUser()
 
   const onDelete = async () => {
     try {
@@ -29,7 +29,14 @@ export const DeleteConfirm = ({ isOpen, onClose, corp_id }: any) => {
         isClosable: true,
       })
     } finally {
-      Router.reload()
+      // Router.reload()
+      mutate(`/api/corps/${user?.id}`)
+      toast({
+        title: '正常に削除されました。',
+        status: 'success',
+        duration: 1500,
+        isClosable: true,
+      })
     }
   }
 

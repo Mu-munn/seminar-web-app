@@ -19,6 +19,8 @@ import {
   useToast,
   useDisclosure,
   Td,
+  Center,
+  CircularProgress,
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/corp'
 import { supabase } from '@/libs/utils/supabaseClient'
@@ -32,6 +34,8 @@ import { useActivesFromCorpId } from '@/hooks/useActivesFromCorpId'
 import { useEffect, useState } from 'react'
 import { Active } from 'src/types/active'
 import { ActiveClass } from '@/libs/active'
+import useSWR from 'swr'
+import { fetcher } from '@/libs/utils/useSWR'
 
 interface CorpListItemProps {
   corp: Corp
@@ -46,10 +50,12 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const { user } = useAuthUser()
   const { id } = router.query
   const userId = { id }.id as string
-  // const userProfile = useProfileFromUserId(userId)
+
   const isSelfAccount = user && isTrue(userId, user.id)
-  const actives: Active[] = useActivesFromCorpId(corp.corp_id)
-  // console.log(actives)
+
+  const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
+
+  if (!actives) return <></>
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -65,18 +71,14 @@ export const CorpListItem = (props: CorpListItemProps) => {
               <MenuItem icon={<EditIcon />}>編集する</MenuItem>
               <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
                 削除する
-                <DeleteConfirm
-                  corp_id={corp.corp_id}
-                  isOpen={isOpen}
-                  onClose={onClose}
-                ></DeleteConfirm>
+                <DeleteConfirm corp_id={corp.corp_id} isOpen={isOpen} onClose={onClose} />
               </MenuItem>
             </MenuList>
           </Menu>
         )}
       </HStack>
 
-      {actives.length > 0 ? (
+      {actives && actives.length > 0 ? (
         <TableContainer w={'100%'}>
           <Table size={'sm'}>
             <Thead>
@@ -91,9 +93,9 @@ export const CorpListItem = (props: CorpListItemProps) => {
               </Tr>
             </Thead>
             <Tbody>
-              {actives && actives.length > 0 && (
+              {actives.length > 0 ? (
                 <>
-                  {actives.map((active) => {
+                  {actives.map((active: Active) => {
                     return (
                       <Tr
                         key={active.corp_id}
@@ -110,14 +112,21 @@ export const CorpListItem = (props: CorpListItemProps) => {
                     )
                   })}
                 </>
+              ) : (
+                <Text pl={4} py={3} fontSize={'sm'} textAlign={'left'}>
+                  活動はありません
+                </Text>
               )}
             </Tbody>
           </Table>
         </TableContainer>
       ) : (
-        <Text pl={3} fontSize={'sm'} textAlign={'left'}>
+        <Text pl={4} py={3} fontSize={'sm'} textAlign={'left'}>
           活動はありません
         </Text>
+        // <Center w={'100%'} h={'100%'}>
+        //   <CircularProgress isIndeterminate color="green.300" />
+        // </Center>
       )}
 
       {isSelfAccount && (

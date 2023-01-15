@@ -9,7 +9,7 @@ export const useCorps = (userId: string): Corp[] => {
 
   const fetchCorps = async (userId: string) => {
     const { data, error, status } = await supabase.from('corps').select('*').eq('user_id', userId)
-    console.log(data)   
+    // console.log(data)
     if (data && data !== null) {
       setCorps(data)
     }

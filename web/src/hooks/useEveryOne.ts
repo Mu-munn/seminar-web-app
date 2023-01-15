@@ -6,6 +6,7 @@ import useProfile from './useProfile'
 
 export const useEveryOne = () => {
   const { profile } = useProfile()
+
   const [everyone, setEveryOne] = useState<any[]>()
 
   useEffect(() => {

@@ -2,9 +2,18 @@ import { UserLayout } from '../components/Layout/UserLayout'
 import { Center, CircularProgress, Heading } from '@chakra-ui/react'
 import { BasicTable } from '@/components/BasicTable'
 import { useEveryOne } from '@/hooks/useEveryOne'
+import useSWR from 'swr'
+import { fetcher } from '@/libs/utils/useSWR'
+import useProfile from '@/hooks/useProfile'
 
 const EveryOne = () => {
-  const everyone = useEveryOne()
+  // const everyone = useEveryOne()
+  const { profile } = useProfile()
+
+  const { data: everyone, error } = useSWR(
+    `/api/everyone?class=${profile?.class}&grade=${profile?.grade}`,
+    fetcher
+  )
 
   return (
     <UserLayout>
