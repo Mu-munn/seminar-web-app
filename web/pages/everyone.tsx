@@ -10,10 +10,11 @@ const EveryOne = () => {
   // const everyone = useEveryOne()
   const { profile } = useProfile()
 
-  const { data: everyone, error } = useSWR(
-    `/api/everyone?class=${profile?.class}&grade=${profile?.grade}`,
-    fetcher
-  )
+  // const { data: everyone, error } = useSWR(
+  //   `/api/everyone?class=${profile?.class}&grade=${profile?.grade}`,
+  //   fetcher
+  // )
+  const { everyone, error } = useEveryOne()
 
   return (
     <UserLayout>

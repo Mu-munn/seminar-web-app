@@ -46,7 +46,6 @@ const ActivePage = () => {
   // const userId = { id }.id
   // const corps = useCorps(routerId)
   const { data: corps, error } = useSWR(`/api/corps/${routerId}`, fetcher)
-  console.log(corps)
 
   const userProfile = useProfileFromUserId(routerId)
   const isSelfAccount = user && isTrue(routerId, user.id)

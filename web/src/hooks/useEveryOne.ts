@@ -3,25 +3,15 @@ import { useEffect, useState } from 'react'
 import { EveryOne } from 'src/types/everyone'
 import { Profile } from 'src/types/types'
 import useProfile from './useProfile'
+import useSWR from 'swr'
+import { fetcher } from '@/libs/utils/useSWR'
 
 export const useEveryOne = () => {
   const { profile } = useProfile()
+  const { data: everyone, error } = useSWR(
+    `/api/everyone?class=${profile?.class}&grade=${profile?.grade}`,
+    fetcher
+  )
 
-  const [everyone, setEveryOne] = useState<any[]>()
-
-  useEffect(() => {
-    profile && fetchEveryOne(profile)
-  }, [profile])
-
-  const fetchEveryOne = async (profile: Profile) => {
-    let { data } = await supabase
-      .from('profiles')
-      .select('id,full_name,class_number,corps(corp_id,corp_name)')
-      .eq('class', profile.class)
-      .eq('grade', profile.grade)
-      .order('class_number')
-    setEveryOne(data as EveryOne[])
-  }
-
-  return everyone
+  return { everyone, error }
 }
