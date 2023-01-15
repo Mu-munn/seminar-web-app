@@ -20,6 +20,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { supabase } from '../src/libs/utils/supabaseClient'
 import Router from 'next/router'
+import { Profile, ProfileCreate } from 'src/types/profile'
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
@@ -63,6 +64,27 @@ export default function SignUp() {
 
   const toast = useToast()
 
+  // const testFunc = async (e: any) => {
+  //   e.preventDefault()
+  //   const { data, error } = await supabase.auth.signUp({
+  //     email: 'mijinkoneko2000@gmail.com',
+  //     password: 'password',
+  //     options: {
+  //       data: {
+  //         full_name: 'testうお',
+  //         course: '0',
+  //         grade: '1',
+  //         class: '2',
+  //         class_number: 0,
+  //         student_number: 0,
+  //         is_admin: 0,
+  //       },
+  //     },
+  //   })
+  //   if (error) console.log(error)
+  //   else console.log(data)
+  // }
+
   const submit = async (e: any) => {
     setIsLoading(true)
     e.preventDefault()
@@ -72,44 +94,50 @@ export default function SignUp() {
     const email = fieldValues.email
     const pass = fieldValues.password
 
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: pass,
-        options: {
-          data: {
-            full_name: fullName,
-            course: fieldValues.course,
-            grade: fieldValues.grade,
-            class: fieldValues.class,
-            class_number: fieldValues.classNumber,
-            student_number: fieldValues.studentNumber,
-          },
-        },
-      })
+    const newData: ProfileCreate = {
+      full_name: fullName,
+      course: fieldValues.course.toString(),
+      grade: fieldValues.grade.toString(),
+      class: fieldValues.class.toString(),
+      class_number: fieldValues.classNumber,
+      student_number: fieldValues.studentNumber.toString(),
+      is_admin: 0,
+    }
 
-      if (error) {
-        setIsLoading(false)
-        toast({
-          title: 'エラー',
-          description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
-          status: 'error',
-          duration: 9000,
-          isClosable: true,
-        })
-      } else {
-        toast({
-          title: 'メールを送信しました！',
-          description: '確認メールを送信しました。ご確認ください！',
-          status: 'success',
-          duration: 9000,
-          isClosable: true,
-        })
-        Router.push('/signIn')
-      }
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: pass,
+      options: {
+        data: newData,
+      },
+    })
+
+    if (error) {
+      console.log(error)
+
+      setIsLoading(false)
+      toast({
+        title: 'エラー',
+        description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+    } else {
+      toast({
+        title: 'メールを送信しました！',
+        description: '確認メールを送信しました。ご確認ください！',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+      Router.push('/signIn')
+    }
   }
 
   return (
     <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'#2C4C81'}>
+      {/* <Button onClick={testFunc}></Button> */}
       <Stack spacing={8} mx={'auto'} maxW={'70%'} py={12} px={6} w={'70%'}>
         {!isLoading ? (
           <>
@@ -120,7 +148,11 @@ export default function SignUp() {
             </Stack>
             <Center rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
               <Stack spacing={4} w={'80%'} my={10}>
-                <form onSubmit={(e)=>{submit(e)}}>
+                <form
+                  onSubmit={(e) => {
+                    submit(e)
+                  }}
+                >
                   <FormControl id="course" isRequired>
                     <FormLabel>学部・学科</FormLabel>
                     <Select placeholder="--" name="course" onChange={handleInputChange}>
