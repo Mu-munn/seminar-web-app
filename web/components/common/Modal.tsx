@@ -1,4 +1,5 @@
 import useAuthUser from '@/hooks/useAuthUser'
+import { useCorps } from '@/hooks/useCorps'
 import { supabase } from '@/libs/utils/supabaseClient'
 import {
   Modal,
@@ -15,7 +16,7 @@ import {
   IconButton,
   useToast,
 } from '@chakra-ui/react'
-import Router from 'next/router'
+import router, { Router, useRouter } from 'next/router'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { Corp } from 'src/types/corp'
@@ -26,7 +27,11 @@ interface CorpListItemProps {
 
 export const OriginalModal = ({ isOpen, onClose }: any) => {
   const [corpName, setCorpName] = useState('')
+  const router = useRouter()
   const { user } = useAuthUser()
+  // const { id } = router.query
+  const userId = 'd230d5d8-405f-4555-baf6-d66bef8aa343'
+  // const { corps, fetchCorps } = useCorps(userId)
 
   const handleSubmit = async () => {
     const { data, error } = await supabase
@@ -36,8 +41,9 @@ export const OriginalModal = ({ isOpen, onClose }: any) => {
     if (error) {
       alert(JSON.stringify(error))
     } else {
+      // fetchCorps(userId)
       onClose()
-      Router.reload()
+      router.reload()
     }
   }
   return (
