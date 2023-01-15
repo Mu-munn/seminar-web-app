@@ -8,6 +8,7 @@ import { useProfileFromUserId } from '@/hooks/useProfileFromUserId'
 import { isTrue } from '@/libs/util'
 
 import { supabase } from '@/libs/utils/supabaseClient'
+import { fetcher } from '@/libs/utils/useSWR'
 import {
   Box,
   Button,
@@ -19,10 +20,11 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Corp } from 'src/types/corp'
 import { Profile } from 'src/types/types'
 // import { Corp, Profile } from 'src/types/types'
+import useSWR from 'swr'
 
 interface ActivePageProps {
   id: string
@@ -36,14 +38,24 @@ const ActivePage = () => {
   const { user } = useAuthUser()
   const [loading, setLoading] = useState(true)
   const [isMyPage, setIsMyPage] = useState(false)
+  const [routerId, setRouterId] = useState<string>('')
 
   // const { profile } = useProfile()
   const router = useRouter()
-  const { id } = router.query
-  const userId = { id }.id as string
-  const corps = useCorps(userId)
-  const userProfile = useProfileFromUserId(userId)
-  const isSelfAccount = user && isTrue(userId, user.id)
+  // const routerId = router.query.id
+  // const userId = { id }.id
+  // const corps = useCorps(routerId)
+  const { data: corps, error } = useSWR(`/api/corps/${routerId}`, fetcher)
+
+  const userProfile = useProfileFromUserId(routerId)
+  const isSelfAccount = user && isTrue(routerId, user.id)
+
+  useEffect(() => {
+    if (router.isReady) {
+      const routerId = router.query.id
+      setRouterId(routerId as string)
+    }
+  }, [router])
 
   return (
     <UserLayout>
@@ -76,7 +88,7 @@ const ActivePage = () => {
 
         {corps ? (
           corps.map((corp: Corp) => {
-            return <CorpListItem key={corp.corp_id} corp={corp as Corp} />
+            return <CorpListItem key={corp.corp_id} corp={corp} />
           })
         ) : (
           <Center w={'100%'} h={'100%'}>

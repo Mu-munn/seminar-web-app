@@ -10,7 +10,7 @@ import {
   Spacer,
   Stack,
   VStack,
-  useToast
+  useToast,
 } from '@chakra-ui/react'
 import { UserLayout } from '@/components/Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
@@ -37,8 +37,7 @@ export default function Profile() {
   const [studentNumber, setStudentNumber] = useState<number>(0)
 
   useEffect(() => {
-    if(user)
-      getProfile(user.id);
+    if (user) getProfile(user.id)
   }, [user])
   const toast = useToast()
 
@@ -58,46 +57,48 @@ export default function Profile() {
     classNumber: UserCreate['classNumber']
     studentNumber: UserCreate['studentNumber']
     user_id: String
-  })=>{
+  }) => {
     try {
       if (!user_id) throw new Error('No user')
-  
+
       const updates = {
-        id:user_id,
-        full_name:fullName,
-        course:course,
-        grade:grade,
-        class:classes,
-        class_number:classNumber,
-        student_number:studentNumber,
+        id: user_id,
+        full_name: fullName,
+        course: course,
+        grade: grade,
+        class: classes,
+        class_number: classNumber,
+        student_number: studentNumber,
       }
-      
-      let { error } = await supabase.from('profiles').upsert(updates).eq('id',user_id)
+
+      let { error } = await supabase.from('profiles').upsert(updates).eq('id', user_id)
       if (error) throw error
-        toast({
-          title: 'SUCCESS!!',
-          description: 'Profileを更新しました',
-          status: 'success',
-          duration: 9000,
-          isClosable: true,
-        })
-        Router.reload()
-      } catch (error) {
-        toast({
-          title: 'ERROR!!',
-          description: '更新に失敗しました。もう一度お試しください',
-          status: 'error',
-          duration: 9000,
-          isClosable: true,
-        })
-      } finally {
-  
-      }
+      toast({
+        title: 'SUCCESS!!',
+        description: 'Profileを更新しました',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+      Router.reload()
+    } catch (error) {
+      toast({
+        title: 'ERROR!!',
+        description: '更新に失敗しました。もう一度お試しください',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+    } finally {
+    }
   }
 
-  const getProfile = async (userid:string)=>{
-    let { data } = await supabase.from('profiles').select('full_name,course,grade,class,class_number,student_number').eq('id',userid)
-    if(data){
+  const getProfile = async (userid: string) => {
+    let { data } = await supabase
+      .from('profiles')
+      .select('full_name,course,grade,class,class_number,student_number')
+      .eq('id', userid)
+    if (data) {
       setFullName(data[0].full_name)
       setCourse(data[0].course)
       setGrade(data[0].grade)
@@ -109,16 +110,16 @@ export default function Profile() {
 
   const submit = async (e: any) => {
     e.preventDefault()
-    const status ={
-      fullName:fullName,
-      course:course,
-      grade:grade,
-      classes:classes,
-      classNumber:classNumber,
-      studentNumber:studentNumber,
-      user_id:user!.id,
-    };
-    
+    const status = {
+      fullName: fullName,
+      course: course,
+      grade: grade,
+      classes: classes,
+      classNumber: classNumber,
+      studentNumber: studentNumber,
+      user_id: user!.id,
+    }
+
     updateProfile(status)
   }
 
