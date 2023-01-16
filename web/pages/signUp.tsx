@@ -40,7 +40,6 @@ export default function SignUp() {
   const [fieldValues, setFieldValues] = useState(defaultValue)
 
   const [showPassword, setShowPassword] = useState(false)
-
   function createFullName(firstName: string, lastName: string) {
     const fullName = firstName + lastName
     return fullName
@@ -61,7 +60,6 @@ export default function SignUp() {
     // setIs(true)になる条件は
     // fieldValuesの中身がすべて''ではない
   }
-
   const toast = useToast()
 
   // const testFunc = async (e: any) => {
@@ -84,7 +82,6 @@ export default function SignUp() {
   //   if (error) console.log(error)
   //   else console.log(data)
   // }
-
   const submit = async (e: any) => {
     setIsLoading(true)
     e.preventDefault()
@@ -148,6 +145,22 @@ export default function SignUp() {
             </Stack>
             <Center rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
               <Stack spacing={4} w={'80%'} my={10}>
+                <Stack spacing={10} pt={2}>
+                      <Button
+                        id="button"
+                        loadingText="Submitting"
+                        size="lg"
+                        bg={'blue.400'}
+                        color={'white'}
+                        _hover={{
+                          bg: 'blue.500',
+                        }}
+                        type={'button'}
+                        onClick ={()=>Router.push('/teacherSignUp')}
+                      >
+                        教員用登録ページへ
+                      </Button>
+                </Stack>
                 <form
                   onSubmit={(e) => {
                     submit(e)
