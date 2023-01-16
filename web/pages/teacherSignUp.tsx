@@ -90,8 +90,6 @@ import {
           })
           if (error) {
             setIsLoading(false)
-            console.log(1);
-            console.log(error);
             toast({
               title: 'エラー',
               description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
@@ -111,7 +109,6 @@ import {
           }
         }else{
           setIsLoading(false)
-          console.log(2);
           toast({
             title: 'エラー',
             description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
