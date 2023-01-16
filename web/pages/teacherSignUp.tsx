@@ -111,7 +111,7 @@ import {
           setIsLoading(false)
           toast({
             title: 'エラー',
-            description: '新規登録に失敗しました。\n 入力項目に間違いがないか確認してください。',
+            description: '新規登録に失敗しました。\nパスフレーズが違います。',
             status: 'error',
             duration: 9000,
             isClosable: true,
