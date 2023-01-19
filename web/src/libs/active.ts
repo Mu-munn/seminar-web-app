@@ -1,4 +1,5 @@
 export class ActiveClass {
+  static selectionResult = ['--','合格','不合格','抽選落ち','延期','中止','保留','test']
   //   結果
   static witchSelectionResult = (selectionResult: number) => {
     switch (selectionResult) {

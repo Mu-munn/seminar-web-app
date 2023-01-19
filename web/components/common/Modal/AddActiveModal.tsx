@@ -1,4 +1,5 @@
 import useAuthUser from '@/hooks/useAuthUser'
+import { ActiveClass } from '@/libs/active'
 import { supabase } from '@/libs/utils/supabaseClient'
 import {
   Modal,
@@ -13,34 +14,70 @@ import {
   Text,
   FormLabel,
   IconButton,
+  Select,
+  useToast,
 } from '@chakra-ui/react'
 import Router from 'next/router'
+import { parse } from 'path'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { Corp } from 'src/types/corp'
+import { mutate } from 'swr'
 
 interface AddActiveModalProps {
   isOpen: any
   onClose: any
   corp: Corp
 }
+
 export const AddActiveModal = (props: AddActiveModalProps) => {
   const { isOpen, onClose, corp } = props
-  const [corpName, setCorpName] = useState('')
   const { user } = useAuthUser()
 
-  const handleSubmit = async () => {
-    const { data, error } = await supabase
-      .from('corps')
-      .insert([{ corp_name: corpName, user_id: user?.id }])
+  const [activeNumber, setActiveNumber] = useState<number>(0)
+  const [activeName, setActiveName] = useState<string>('')
+  const [activeAt, setActiveAt] = useState<any>()
+  const [activePlace, setActivePlace] = useState<string>('')
+  const [absenceSubmitAt, setAbsenceSubmitAt] = useState<any>()
+  const [selectionResult, setSelectionResult] = useState<number>(0)
 
-    if (error) {
-      alert(JSON.stringify(error))
-    } else {
-      onClose()
-      Router.reload()
-    }
+  const toast = useToast()
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+    const { data, error, status } = await supabase
+      .from('actives')
+      .select('*')
+      .eq('corp_id', corp.corp_id)
+
+    data && setActiveNumber(data.length + 1)
+
+    // const { data: res, error: insertErr } = await supabase.from('actives').insert([
+    //   {
+    //     corp_id: corp.corp_id,
+    //     active_number: activeNumber,
+    //     active_name: activeName,
+    //     active_at: activeAt,
+    //     active_place: activePlace,
+    //     absence_submit_at: absenceSubmitAt,
+    //     selection_result: selectionResult,
+    //   },
+    // ])
+
+    // if (insertErr) {
+    //   toast({
+    //     title: 'エラー',
+    //     description: `${JSON.stringify(insertErr)}`,
+    //     status: 'error',
+    //     duration: 9000,
+    //     isClosable: true,
+    //   })
+    // }
+    // mutate(`/api/actives/${corp.corp_id}`)
+    // onClose()
+    // // Router.reload()
   }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'2xl'} isCentered={false}>
       <ModalOverlay />
@@ -68,7 +105,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
                 variant="filled"
                 placeholder="例：会社説明会"
                 w={'400px'}
-                onChange={(e) => setCorpName(e.target.value)}
+                onChange={(e) => setActiveName(e.target.value)}
               />
             </FormControl>
           </VStack>
@@ -77,9 +114,11 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
               <FormLabel>実施日</FormLabel>
               <Input
                 variant="filled"
-                placeholder="例：2022年12月22日"
+                placeholder="Select Date"
                 w={'400px'}
-                onChange={(e) => setCorpName(e.target.value)}
+                onChange={(e) => setActiveAt(e.target.value)}
+                type="date"
+                size="md"
               />
             </FormControl>
           </VStack>
@@ -90,7 +129,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
                 variant="filled"
                 placeholder="例：本社"
                 w={'400px'}
-                onChange={(e) => setCorpName(e.target.value)}
+                onChange={(e) => setActivePlace(e.target.value)}
               />
             </FormControl>
           </VStack>
@@ -99,10 +138,30 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
               <FormLabel>公欠願書提出日</FormLabel>
               <Input
                 variant="filled"
-                placeholder="例：2022年12月10日"
+                placeholder="Select Date"
                 w={'400px'}
-                onChange={(e) => setCorpName(e.target.value)}
+                onChange={(e) => setAbsenceSubmitAt(e.target.value)}
+                type="date"
+                size="md"
               />
+            </FormControl>
+          </VStack>
+          <VStack justify={'center'} spacing="24px">
+            <FormControl mt={'50px'} width={'auto'}>
+              <FormLabel>結果</FormLabel>
+              <Select
+                variant="filled"
+                w={'400px'}
+                onChange={(e) => setSelectionResult(parseInt(e.target.value))}
+              >
+                {ActiveClass.selectionResult.map((result, index) => {
+                  return (
+                    <option key={result} value={index}>
+                      {result}
+                    </option>
+                  )
+                })}
+              </Select>
             </FormControl>
           </VStack>
         </ModalBody>
