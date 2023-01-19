@@ -1,5 +1,6 @@
 import {
   Box,
+  Image,
   Button,
   Center,
   Flex,
@@ -78,9 +79,9 @@ export const UserLayout = (props: AdminLayoutProps) => {
         position="fixed"
       >
         <Box fontSize="sm" lineHeight="tall">
-          <Heading fontSize="40px" fontWeight="bold" pb="" w={'100%'} textAlign={'center'} pt={3}>
-            MINORU
-          </Heading>
+          <Box width = '100%' height={'50%'}>
+            <Image src='/logo.png' alt='Dan Abramov' />
+</Box>
           {profile?.isAdmin && <Text textAlign={'center'}>管理者</Text>}
 
           {profile?.isAdmin && (
