@@ -135,9 +135,11 @@ export const UserLayout = (props: AdminLayoutProps) => {
                   <UserInfo />
                 </Box>
               </Link>
+              <Link href="/contact">
               <SidebarLink mt="5" icon={<BsMailbox />}>
                 お問い合わせ
               </SidebarLink>
+              </Link>
               <SidebarLink mt="2" icon={<RiLogoutBoxRLine />} onClick={handleLogOut}>
                 ログアウト
               </SidebarLink>
