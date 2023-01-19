@@ -1,19 +1,23 @@
 import { supabase } from '@/libs/utils/supabaseClient'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { Corp } from 'src/types/corp'
 import useProfile from './useProfile'
 
-export const useCorps = () => {
-  const { profile } = useProfile()
-  const [corps, setCorps] = useState<any>()
-
-  useEffect(() => {
-    profile && fetchCorps(profile.id)
-  }, [profile])
+export const useCorps = (userId: string): Corp[] => {
+  // const { profile } = useProfile()
+  const [corps, setCorps] = useState<Corp[]>([])
 
   const fetchCorps = async (userId: string) => {
-    let { data, error, status } = await supabase.from('corps').select('*').eq('user_id', userId)
-    setCorps(data)
+    const { data, error, status } = await supabase.from('corps').select('*').eq('user_id', userId)
+    // console.log(data)
+    if (data && data !== null) {
+      setCorps(data)
+    }
   }
+
+  useEffect(() => {
+    fetchCorps(userId)
+  }, [userId])
 
   return corps
 }
