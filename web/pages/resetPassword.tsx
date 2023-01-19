@@ -44,7 +44,7 @@ import {
         setLoading(false)
         toast({
           title: 'ERROR!!',
-          description: '変更に失敗しました。\nもう一度お試しください',
+          description: '変更に失敗しました。\n再度お試しください',
           status: 'error',
           duration: 9000,
           isClosable: true,
@@ -52,7 +52,7 @@ import {
       } else {
         toast({
           title: 'SUCCESS!!',
-          description: 'パスワードは正常に変更されました',
+          description: 'パスワードは正常に変更されました！',
           status: 'success',
           duration: 1500,
           isClosable: true,
