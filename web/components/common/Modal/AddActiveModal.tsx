@@ -155,7 +155,11 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
                 onChange={(e) => setSelectionResult(parseInt(e.target.value))}
               >
                 {ActiveClass.selectionResult.map((result, index) => {
-                  return <option value={index}>{result}</option>
+                  return (
+                    <option key={result} value={index}>
+                      {result}
+                    </option>
+                  )
                 })}
               </Select>
             </FormControl>
