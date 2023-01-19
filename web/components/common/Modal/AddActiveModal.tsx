@@ -1,4 +1,5 @@
 import useAuthUser from '@/hooks/useAuthUser'
+import { ActiveClass } from '@/libs/active'
 import { supabase } from '@/libs/utils/supabaseClient'
 import {
   Modal,
@@ -13,13 +14,15 @@ import {
   Text,
   FormLabel,
   IconButton,
-  Select
+  Select,
+  useToast,
 } from '@chakra-ui/react'
 import Router from 'next/router'
 import { parse } from 'path'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { Corp } from 'src/types/corp'
+import { mutate } from 'swr'
 
 interface AddActiveModalProps {
   isOpen: any
@@ -30,65 +33,49 @@ interface AddActiveModalProps {
 export const AddActiveModal = (props: AddActiveModalProps) => {
   const { isOpen, onClose, corp } = props
   const { user } = useAuthUser()
-  
+
   const [activeNumber, setActiveNumber] = useState<number>(0)
   const [activeName, setActiveName] = useState<string>('')
   const [activeAt, setActiveAt] = useState<any>()
   const [activePlace, setActivePlace] = useState<string>('')
   const [absenceSubmitAt, setAbsenceSubmitAt] = useState<any>()
-  let [selectionResult, setSelectionResult] = useState<any>(0)  
+  const [selectionResult, setSelectionResult] = useState<number>(0)
 
-  const witchSelectionResult = (selectionResult: number) => {
-    switch (selectionResult) {
-      case 0:
-        return '--'
-      case 1:
-        return '合格'
-      case 2:
-        return '不合格'
-      case 3:
-        return '抽選落ち'
-      case 4:
-        return '延期'
-      case 5:
-        return '中止'
-      case 6:
-        return '保留'
-      default:
-        return '--'
-    }
-  }
+  const toast = useToast()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
     const { data, error, status } = await supabase
-    .from('actives')
-    .select('*').eq('corp_id', corp.corp_id)
+      .from('actives')
+      .select('*')
+      .eq('corp_id', corp.corp_id)
 
     data && setActiveNumber(data.length + 1)
 
-    selectionResult = witchSelectionResult(selectionResult)
+    // const { data: res, error: insertErr } = await supabase.from('actives').insert([
+    //   {
+    //     corp_id: corp.corp_id,
+    //     active_number: activeNumber,
+    //     active_name: activeName,
+    //     active_at: activeAt,
+    //     active_place: activePlace,
+    //     absence_submit_at: absenceSubmitAt,
+    //     selection_result: selectionResult,
+    //   },
+    // ])
 
-    console.log(selectionResult);
-    
-
-  //   const { data:res, error:insertErr } = await supabase
-  //     .from('actives')
-  //     .insert([{ corp_id: corp.corp_id, 
-  //                 active_number: activeNumber, 
-  //                 active_name: activeName, 
-  //                 active_at: activeAt, 
-  //                 active_place: activePlace, 
-  //                 absence_submit_at: absenceSubmitAt,
-  //                 selection_result: selectionResult
-  //               }])
-
-  //   if (insertErr) {
-  //     alert(JSON.stringify(insertErr))
-  //   } else {
-  //     onClose()
-  //     Router.reload()
-  //   }
-  // }
+    // if (insertErr) {
+    //   toast({
+    //     title: 'エラー',
+    //     description: `${JSON.stringify(insertErr)}`,
+    //     status: 'error',
+    //     duration: 9000,
+    //     isClosable: true,
+    //   })
+    // }
+    // mutate(`/api/actives/${corp.corp_id}`)
+    // onClose()
+    // // Router.reload()
   }
 
   return (
@@ -162,25 +149,14 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
           <VStack justify={'center'} spacing="24px">
             <FormControl mt={'50px'} width={'auto'}>
               <FormLabel>結果</FormLabel>
-              {/* <Input
-                variant="filled"
-                placeholder="Select result"
-                w={'400px'}
-                onChange={(e) => setSelectionResult(e.target.value)}
-                
-              /> */}
               <Select
                 variant="filled"
                 w={'400px'}
-                onChange={(e) =>  setSelectionResult(parseInt(e.target.value))}
+                onChange={(e) => setSelectionResult(parseInt(e.target.value))}
               >
-                <option value="0">--</option>
-                <option value="1">合格</option>
-                <option value="2">不合格</option>
-                <option value="3">抽選落ち</option>
-                <option value="4">延期</option>
-                <option value="5">中止</option>
-                <option value="6">保留</option>
+                {ActiveClass.selectionResult.map((result, index) => {
+                  return <option value={index}>{result}</option>
+                })}
               </Select>
             </FormControl>
           </VStack>

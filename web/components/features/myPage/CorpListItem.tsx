@@ -107,7 +107,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
                         <Td>{active.active_at.toString()}</Td>
                         <Td>{active.active_place}</Td>
                         <Td>{active.absence_submit_at?.toString()}</Td>
-                        <Td>{ActiveClass.witchSelectionResult(active.selection_result)}</Td>
+                        <Td>{ActiveClass.selectionResult[active.selection_result]}</Td>
                       </Tr>
                     )
                   })}
