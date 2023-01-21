@@ -58,18 +58,16 @@ export const CorpListItem = (props: CorpListItemProps) => {
 
   const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
 
-  const onSubmit =()=>{
-    
-  }
+  const onSubmit = () => {}
 
   if (!actives) return <></>
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
       <HStack mb={'20px'}>
-        <Editable textAlign='center' defaultValue={corp?.corp_name} onSubmit={onSubmit}>
-          <EditablePreview/>
-          <EditableInput/>
+        <Editable textAlign="center" defaultValue={corp?.corp_name} onSubmit={onSubmit}>
+          <EditablePreview />
+          <EditableInput />
         </Editable>
         {/* <Text fontWeight={'bold'} px={3}>
           {corp?.corp_name}
@@ -77,13 +75,15 @@ export const CorpListItem = (props: CorpListItemProps) => {
         <Spacer></Spacer>
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-          <MenuList >
-            <MenuItem  icon={<EditIcon />}>
-              編集する
-            </MenuItem>
+          <MenuList>
+            <MenuItem icon={<EditIcon />}>編集する</MenuItem>
             <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
               削除する
-              <DeleteConfirm corp_id={corp.corp_id} isOpen={isOpen} onClose={onClose} ></DeleteConfirm>
+              <DeleteConfirm
+                corp_id={corp.corp_id}
+                isOpen={isOpen}
+                onClose={onClose}
+              ></DeleteConfirm>
             </MenuItem>
           </MenuList>
         </Menu>
