@@ -20,7 +20,6 @@ import {
   useDisclosure,
   Editable,
   EditableInput,
-  EditableTextarea,
   EditablePreview
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
@@ -40,12 +39,18 @@ export const CorpListItem = (props: CorpListItemProps) => {
   
   }
 
+  const onSubmit=async()=>{
+    const{data,error}=await supabase
+      .from('Corps') 
+      .update({corpName:})
+  }
+
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
       <HStack mb={'20px'}>
-        <Editable defaultValue={corp?.corp_name}>
+        <Editable textAlign='center' defaultValue={corp?.corp_name} onSubmit={onSubmit}>
           <EditablePreview/>
-          <EditableTextarea/>
+          <EditableInput/>
         </Editable>
         {/* <Text fontWeight={'bold'} px={3}>
           {corp?.corp_name}
