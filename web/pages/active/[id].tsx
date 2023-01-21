@@ -2,8 +2,13 @@ import { OriginalModal } from '@/components/common/Modal'
 import { CorpListItem } from '@/components/features/myPage/CorpListItem'
 import { UserLayout } from '@/components/Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
+import { useCorps } from '@/hooks/useCorps'
 import useProfile from '@/hooks/useProfile'
+import { useProfileFromUserId } from '@/hooks/useProfileFromUserId'
+import { isTrue } from '@/libs/util'
+
 import { supabase } from '@/libs/utils/supabaseClient'
+import { fetcher } from '@/libs/utils/useSWR'
 import {
   Box,
   Button,
@@ -14,8 +19,12 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { Corp, Profile } from 'src/types/types'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState } from 'react'
+import { Corp } from 'src/types/corp'
+import { Profile } from 'src/types/types'
+// import { Corp, Profile } from 'src/types/types'
+import useSWR from 'swr'
 
 interface ActivePageProps {
   id: string
@@ -23,56 +32,63 @@ interface ActivePageProps {
   // propsにprofileの型を追加
   profile: Profile
 }
-const ActivePage = (props: ActivePageProps) => {
-  const { id, corps } = props
+const ActivePage = () => {
+  // const { id, corps } = props
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user } = useAuthUser()
   const [loading, setLoading] = useState(true)
   const [isMyPage, setIsMyPage] = useState(false)
-  const { profile } = useProfile()
+  const [routerId, setRouterId] = useState<string>('')
+
+  // const { profile } = useProfile()
+  const router = useRouter()
+  // const routerId = router.query.id
+  // const userId = { id }.id
+  // const corps = useCorps(routerId)
+  const { data: corps, error } = useSWR(`/api/corps/${routerId}`, fetcher)
+
+  const userProfile = useProfileFromUserId(routerId)
+  const isSelfAccount = user && isTrue(routerId, user.id)
 
   useEffect(() => {
-    setLoading(false)
-  }, [corps])
-
-  useEffect(() => {
-    if (user) user.id === corps[0].user_id ? setIsMyPage(true) : setIsMyPage(false)
-  }, [user])
-
-  useEffect(() => {
-    console.log(profile)
-  }, [profile])
+    if (router.isReady) {
+      const routerId = router.query.id
+      setRouterId(routerId as string)
+    }
+  }, [router])
 
   return (
     <UserLayout>
       <Stack>
         <HStack justify={'space-between'} mb={10}>
-          {isMyPage ? (
+          {isSelfAccount ? (
             <Heading pl={2} fontSize={'20px'}>
               自分の活動
             </Heading>
           ) : (
             <Heading pl={2} fontSize={'20px'}>
-              {/* 最後にここで、profile.full_nameで表示 */}
-              {corps[0].user_id + 'さんの活動'}
+              {userProfile?.full_name + ' さんの活動' ?? ''}
             </Heading>
           )}
 
-          <Button
-            color={'blue.600'}
-            onClick={onOpen}
-            borderRadius={'50px'}
-            bg={'#ededed'}
-            boxShadow={'20px 20px 60px #bebebe,-20px -20px 60px #ffffff'}
-          >
-            新しい会社を追加する
-          </Button>
+          {isSelfAccount && (
+            <Button
+              color={'blue.600'}
+              onClick={onOpen}
+              borderRadius={'50px'}
+              bg={'#ededed'}
+              boxShadow={'20px 20px 60px #bebebe,-20px -20px 60px #ffffff'}
+            >
+              新しい会社を追加する
+            </Button>
+          )}
+
           <OriginalModal isOpen={isOpen} onClose={onClose}></OriginalModal>
         </HStack>
 
-        {!loading ? (
-          corps.map((corp) => {
-            return <CorpListItem key={corp.corp_id} corp={corp as Corp} />
+        {corps ? (
+          corps.map((corp: Corp) => {
+            return <CorpListItem key={corp.corp_id} corp={corp} />
           })
         ) : (
           <Center w={'100%'} h={'100%'}>
@@ -84,23 +100,3 @@ const ActivePage = (props: ActivePageProps) => {
   )
 }
 export default ActivePage
-
-export async function getServerSideProps(context: any) {
-  const id = context.query.id
-
-  let { data, error, status } = await supabase.from('corps').select('*').eq('user_id', id)
-  // ここで、profileテーブルから、corp.user_idと同じuserのデータを取得する（corp_nameを取得するため）
-
-  if (!data) {
-    data = []
-  }
-  const corps = data as Corp[]
-
-  // 次にここでprofileをデータとして渡す
-  return {
-    props: {
-      id: id,
-      corps: corps,
-    },
-  }
-}

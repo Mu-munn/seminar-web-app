@@ -101,18 +101,23 @@ export const UserLayout = (props: AdminLayoutProps) => {
 
           <ScrollArea pt="5" pb="6" w={'100%'}>
             <Stack pb="6" w={'100%'}>
-              <Link href="/">
+              {/* <Link href="/">
                 <SidebarLinkComponent icon={<BsBuilding />}>ダッシュボード</SidebarLinkComponent>
-              </Link>
-              {!profile?.isAdmin && (
-                <Link href={`/active/${user?.id}`}>
+              </Link> */}
+              {!profile?.isAdmin && user && (
+                <Link
+                  href={`/active/${user.id}`}
+                  onClick={() => {
+                    router.push(`/active/${user.id}`)
+                  }}
+                >
                   <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
                 </Link>
               )}
 
               <Link href="/everyone">
                 <SidebarLinkComponent icon={<BsLightbulb />}>
-                  {profile?.isAdmin ? '生徒の頑張り' : 'みんなの活動'}
+                  {profile?.isAdmin ? '生徒の頑張り' : 'クラスのみんなの活動'}
                 </SidebarLinkComponent>
               </Link>
             </Stack>
@@ -130,9 +135,11 @@ export const UserLayout = (props: AdminLayoutProps) => {
                   <UserInfo />
                 </Box>
               </Link>
+              <Link href="/contact">
               <SidebarLink mt="5" icon={<BsMailbox />}>
                 お問い合わせ
               </SidebarLink>
+              </Link>
               <SidebarLink mt="2" icon={<RiLogoutBoxRLine />} onClick={handleLogOut}>
                 ログアウト
               </SidebarLink>

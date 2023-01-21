@@ -123,6 +123,13 @@ export default function SignUp() {
                 </Link>
               </Text>
             </Stack>
+            <Stack pt={4}>
+              <Text align={'center'}>
+                <Link color={'blue.400'} href="/sendEmail">
+                  パスワードを忘れた方はこちら
+                </Link>
+              </Text>
+            </Stack>
           </Stack>
         </Center>
       </Stack>
