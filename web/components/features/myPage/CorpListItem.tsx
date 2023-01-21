@@ -18,15 +18,12 @@ import {
   MenuList,
   useToast,
   useDisclosure,
-<<<<<<< HEAD
   Editable,
   EditableInput,
-  EditablePreview
-=======
+  EditablePreview,
   Td,
   Center,
   CircularProgress,
->>>>>>> develop
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/corp'
 import { supabase } from '@/libs/utils/supabaseClient'
@@ -53,17 +50,6 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActiceOpen, onOpen: onActiveOpen, onClose: onActiveClose } = useDisclosure()
 
-<<<<<<< HEAD
-  const onEditClick = async () => {
-  
-  }
-
-  const onSubmit=async()=>{
-    // const{data,error}=await supabase
-    //   .from('Corps') 
-    //   .update({corpName:})
-  }
-=======
   const { user } = useAuthUser()
   const { id } = router.query
   const userId = { id }.id as string
@@ -72,8 +58,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
 
   const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
 
+  const onSubmit =()=>{
+    
+  }
+
   if (!actives) return <></>
->>>>>>> develop
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -86,11 +75,10 @@ export const CorpListItem = (props: CorpListItemProps) => {
           {corp?.corp_name}
         </Text> */}
         <Spacer></Spacer>
-<<<<<<< HEAD
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
           <MenuList >
-            <MenuItem  onClick={onEditClick} icon={<EditIcon />}>
+            <MenuItem  icon={<EditIcon />}>
               編集する
             </MenuItem>
             <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
@@ -99,20 +87,6 @@ export const CorpListItem = (props: CorpListItemProps) => {
             </MenuItem>
           </MenuList>
         </Menu>
-=======
-        {isSelfAccount && (
-          <Menu>
-            <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-            <MenuList>
-              <MenuItem icon={<EditIcon />}>編集する</MenuItem>
-              <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
-                削除する
-                <DeleteConfirm corp_id={corp.corp_id} isOpen={isOpen} onClose={onClose} />
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
->>>>>>> develop
       </HStack>
 
       {actives && actives.length > 0 ? (
