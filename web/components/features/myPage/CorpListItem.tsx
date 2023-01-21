@@ -39,6 +39,7 @@ import { Active } from 'src/types/active'
 import { ActiveClass } from '@/libs/active'
 import useSWR from 'swr'
 import { fetcher } from '@/libs/utils/useSWR'
+import { EditConfirm } from '@/components/common/Modal/EditCorpModal'
 
 interface CorpListItemProps {
   corp: Corp
@@ -58,7 +59,9 @@ export const CorpListItem = (props: CorpListItemProps) => {
 
   const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
 
-  const onSubmit = () => {}
+  const onSubmit = () => {
+    console.log(corp.corp_id, corp.corp_name)
+  }
 
   if (!actives) return <></>
 
@@ -76,7 +79,15 @@ export const CorpListItem = (props: CorpListItemProps) => {
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
           <MenuList>
-            <MenuItem icon={<EditIcon />}>編集する</MenuItem>
+            <MenuItem onClick={onOpen} icon={<EditIcon />}>
+              編集する
+              <EditConfirm
+                corp_id={corp.corp_id}
+                corp_name={corp.corp_name}
+                isOpen={isOpen}
+                onClose={onClose}
+              ></EditConfirm>
+            </MenuItem>
             <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
               削除する
               <DeleteConfirm
