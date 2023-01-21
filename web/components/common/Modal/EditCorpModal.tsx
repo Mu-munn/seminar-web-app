@@ -6,22 +6,35 @@ import {
   VStack,
   Button,
   ModalFooter,
+  FormControl,
+  FormLabel,
+  Input,
   Text,
   useToast,
 } from '@chakra-ui/react'
 import { supabase } from '@/libs/utils/supabaseClient'
 import { mutate } from 'swr'
 import useAuthUser from '@/hooks/useAuthUser'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 export const EditConfirm = ({ corp_id, corp_name, isOpen, onClose }: any) => {
   const toast = useToast()
   const { user } = useAuthUser()
+  const [corpName, setCorpName] = useState(corp_name)
+
+  const router = useRouter()
+
+  const corpNameChange = (e: any) => {
+    setCorpName(() => e.target.value)
+    console.log({ corpName })
+  }
 
   const onEdit = async () => {
     try {
       const { data, error } = await supabase
         .from('corps')
-        .update({ corp_name: 'corp_name' })
+        .update({ corp_name: corpName })
         .eq('corp_id', corp_id)
     } catch {
       toast({
@@ -32,7 +45,7 @@ export const EditConfirm = ({ corp_id, corp_name, isOpen, onClose }: any) => {
         isClosable: true,
       })
     } finally {
-      // Router.reload()
+      //
       mutate(`/api/corps/${user?.id}`)
       toast({
         title: '正常に変更されました。',
@@ -40,6 +53,8 @@ export const EditConfirm = ({ corp_id, corp_name, isOpen, onClose }: any) => {
         duration: 1500,
         isClosable: true,
       })
+      router.reload()
+      // onClose()
     }
   }
 
@@ -53,9 +68,20 @@ export const EditConfirm = ({ corp_id, corp_name, isOpen, onClose }: any) => {
               会社名の変更
             </Text>
           </VStack>
-          <VStack paddingTop={'3%'} paddingBottom={'2%'}>
-            <p>活動情報も消えてしまいます。 本当に削除しますか？</p>
+          <VStack justify={'center'} spacing="24px">
+            <FormControl mt={'50px'} width={'auto'}>
+              <FormLabel>会社名</FormLabel>
+              <Input
+                onChange={corpNameChange}
+                variant="filled"
+                defaultValue={corp_name}
+                w={'400px'}
+              />
+            </FormControl>
           </VStack>
+          {/* <VStack paddingTop={'3%'} paddingBottom={'2%'}>
+            <input onChange={corpNameChange} defaultValue={corpName} autoFocus={true} au></input>
+          </VStack> */}
         </ModalBody>
         <ModalFooter justifyContent="center" paddingBottom={'4%'}>
           <Button

@@ -50,6 +50,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActiceOpen, onOpen: onActiveOpen, onClose: onActiveClose } = useDisclosure()
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
 
   const { user } = useAuthUser()
   const { id } = router.query
@@ -79,13 +80,13 @@ export const CorpListItem = (props: CorpListItemProps) => {
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
           <MenuList>
-            <MenuItem onClick={onOpen} icon={<EditIcon />}>
+            <MenuItem onClick={onEditOpen} icon={<EditIcon />}>
               編集する
               <EditConfirm
                 corp_id={corp.corp_id}
                 corp_name={corp.corp_name}
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isEditOpen}
+                onClose={onEditClose}
               ></EditConfirm>
             </MenuItem>
             <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
