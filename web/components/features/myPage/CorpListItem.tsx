@@ -17,7 +17,11 @@ import {
   MenuItem,
   MenuList,
   useToast,
-  useDisclosure
+  useDisclosure,
+  Editable,
+  EditableInput,
+  EditableTextarea,
+  EditablePreview
 } from '@chakra-ui/react'
 import { Corp } from 'src/types/types'
 import { supabase } from '@/libs/utils/supabaseClient'
@@ -32,18 +36,25 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const onEditClick = async () => {
+  
+  }
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
       <HStack mb={'20px'}>
-        <Text fontWeight={'bold'} px={3}>
+        <Editable defaultValue={corp?.corp_name}>
+          <EditablePreview/>
+          <EditableTextarea/>
+        </Editable>
+        {/* <Text fontWeight={'bold'} px={3}>
           {corp?.corp_name}
-        </Text>
+        </Text> */}
         <Spacer></Spacer>
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
           <MenuList >
-            <MenuItem icon={<EditIcon />}>
+            <MenuItem  onClick={onEditClick} icon={<EditIcon />}>
               編集する
             </MenuItem>
             <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
