@@ -40,9 +40,9 @@ export const CorpListItem = (props: CorpListItemProps) => {
   }
 
   const onSubmit=async()=>{
-    const{data,error}=await supabase
-      .from('Corps') 
-      .update({corpName:})
+    // const{data,error}=await supabase
+    //   .from('Corps') 
+    //   .update({corpName:})
   }
 
   return (
