@@ -18,6 +18,9 @@ import {
   MenuList,
   useToast,
   useDisclosure,
+  Editable,
+  EditableInput,
+  EditablePreview,
   Td,
   Center,
   CircularProgress,
@@ -36,6 +39,7 @@ import { Active } from 'src/types/active'
 import { ActiveClass } from '@/libs/active'
 import useSWR from 'swr'
 import { fetcher } from '@/libs/utils/useSWR'
+import { EditConfirm } from '@/components/common/Modal/EditCorpModal'
 
 interface CorpListItemProps {
   corp: Corp
@@ -46,6 +50,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActiceOpen, onOpen: onActiveOpen, onClose: onActiveClose } = useDisclosure()
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
 
   const { user } = useAuthUser()
   const { id } = router.query
@@ -55,27 +60,45 @@ export const CorpListItem = (props: CorpListItemProps) => {
 
   const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
 
+  const onSubmit = () => {
+    console.log(corp.corp_id, corp.corp_name)
+  }
+
   if (!actives) return <></>
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
       <HStack mb={'20px'}>
-        <Text fontWeight={'bold'} px={3}>
+        <Editable textAlign="center" defaultValue={corp?.corp_name} onSubmit={onSubmit}>
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
+        {/* <Text fontWeight={'bold'} px={3}>
           {corp?.corp_name}
-        </Text>
+        </Text> */}
         <Spacer></Spacer>
-        {isSelfAccount && (
-          <Menu>
-            <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-            <MenuList>
-              <MenuItem icon={<EditIcon />}>編集する</MenuItem>
-              <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
-                削除する
-                <DeleteConfirm corp_id={corp.corp_id} isOpen={isOpen} onClose={onClose} />
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
+        <Menu>
+          <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
+          <MenuList>
+            <MenuItem onClick={onEditOpen} icon={<EditIcon />}>
+              編集する
+              <EditConfirm
+                corp_id={corp.corp_id}
+                corp_name={corp.corp_name}
+                isOpen={isEditOpen}
+                onClose={onEditClose}
+              ></EditConfirm>
+            </MenuItem>
+            <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
+              削除する
+              <DeleteConfirm
+                corp_id={corp.corp_id}
+                isOpen={isOpen}
+                onClose={onClose}
+              ></DeleteConfirm>
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </HStack>
 
       {actives && actives.length > 0 ? (
