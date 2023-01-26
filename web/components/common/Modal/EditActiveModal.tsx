@@ -1,6 +1,4 @@
-import useAuthUser from '@/hooks/useAuthUser'
 import { ActiveClass } from '@/libs/active'
-import { supabase } from '@/libs/utils/supabaseClient'
 import {
   Modal,
   ModalOverlay,
@@ -16,11 +14,11 @@ import {
   IconButton,
   Select,
   useToast,
+  HStack,
 } from '@chakra-ui/react'
-import Router from 'next/router'
-import { parse } from 'path'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
+import { Active } from 'src/types/active'
 import { Corp } from 'src/types/corp'
 import { mutate } from 'swr'
 
@@ -28,54 +26,32 @@ interface AddActiveModalProps {
   isOpen: any
   onClose: any
   corp: Corp
+  active: Active
 }
 
-export const AddActiveModal = (props: AddActiveModalProps) => {
-  const { isOpen, onClose, corp } = props
-  const { user } = useAuthUser()
+export const EditActiveModal = (props: AddActiveModalProps) => {
+  const { isOpen, onClose, corp, active } = props
 
-  const [activeNumber, setActiveNumber] = useState<number>(0)
-  const [activeName, setActiveName] = useState<string>('')
-  const [activeAt, setActiveAt] = useState<any>()
-  const [activePlace, setActivePlace] = useState<string>('')
-  const [absenceSubmitAt, setAbsenceSubmitAt] = useState<any>()
-  const [selectionResult, setSelectionResult] = useState<number>(0)
+  const [activeNumber, setActiveNumber] = useState<number>(active.active_number)
+  const [activeName, setActiveName] = useState<string>(active.active_name)
+  const [activeAt, setActiveAt] = useState<any>(active.active_at)
+  const [activePlace, setActivePlace] = useState<string>(active.active_place)
+  const [absenceSubmitAt, setAbsenceSubmitAt] = useState<any>(active.absence_submit_at)
+  const [selectionResult, setSelectionResult] = useState<number>(active.selection_result)
 
   const toast = useToast()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-    const { data, error, status } = await supabase
-      .from('actives')
-      .select('*')
-      .eq('corp_id', corp.corp_id)
+    toast({
+      title: 'あ、今はちょっとできないです。 作っていないので。',
+      status: 'info',
+      duration: 2000,
+      isClosable: true,
+    })
 
-    data && setActiveNumber(data.length + 1)
-
-    const { data: res, error: insertErr } = await supabase.from('actives').insert([
-      {
-        corp_id: corp.corp_id,
-        active_number: activeNumber,
-        active_name: activeName,
-        active_at: activeAt,
-        active_place: activePlace,
-        absence_submit_at: absenceSubmitAt,
-        selection_result: selectionResult,
-      },
-    ])
-
-    if (insertErr) {
-      toast({
-        title: 'エラー',
-        description: `${JSON.stringify(insertErr)}`,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
-    }
     mutate(`/api/actives/${corp.corp_id}`)
     onClose()
-    // Router.reload()
   }
 
   return (
@@ -102,6 +78,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
             <FormControl mt={'50px'} width={'auto'}>
               <FormLabel>活動種類</FormLabel>
               <Input
+                value={activeName}
                 variant="filled"
                 placeholder="例：会社説明会"
                 w={'400px'}
@@ -113,6 +90,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
             <FormControl mt={'50px'} width={'auto'}>
               <FormLabel>実施日</FormLabel>
               <Input
+                value={activeAt}
                 variant="filled"
                 placeholder="Select Date"
                 w={'400px'}
@@ -126,6 +104,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
             <FormControl mt={'50px'} width={'auto'}>
               <FormLabel>実施場所</FormLabel>
               <Input
+                value={activePlace}
                 variant="filled"
                 placeholder="例：本社"
                 w={'400px'}
@@ -137,6 +116,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
             <FormControl mt={'50px'} width={'auto'}>
               <FormLabel>公欠願書提出日</FormLabel>
               <Input
+                value={absenceSubmitAt}
                 variant="filled"
                 placeholder="Select Date"
                 w={'400px'}
@@ -150,6 +130,7 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
             <FormControl mt={'50px'} width={'auto'}>
               <FormLabel>結果</FormLabel>
               <Select
+                value={selectionResult}
                 variant="filled"
                 w={'400px'}
                 onChange={(e) => setSelectionResult(parseInt(e.target.value))}
@@ -167,9 +148,14 @@ export const AddActiveModal = (props: AddActiveModalProps) => {
         </ModalBody>
 
         <ModalFooter justifyContent="center" mb={'70px'} mt={'30px'}>
-          <Button colorScheme="blue" mr={3} size={'lg'} onClick={handleSubmit}>
-            活動を追加する
-          </Button>
+          <HStack justify={'space-between'}>
+            <Button colorScheme="red" mr={3} size={'lg'} onClick={handleSubmit}>
+              活動を削除
+            </Button>
+            <Button colorScheme="blue" mr={3} size={'lg'} onClick={handleSubmit}>
+              活動を編集
+            </Button>
+          </HStack>
         </ModalFooter>
       </ModalContent>
     </Modal>

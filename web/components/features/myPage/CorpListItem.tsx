@@ -40,6 +40,8 @@ import { ActiveClass } from '@/libs/active'
 import useSWR from 'swr'
 import { fetcher } from '@/libs/utils/useSWR'
 import { EditConfirm } from '@/components/common/Modal/EditCorpModal'
+import { EditActiveModal } from '@/components/common/Modal/EditActiveModal'
+import { ActiveListItem } from './ActiveListItem'
 
 interface CorpListItemProps {
   corp: Corp
@@ -60,22 +62,18 @@ export const CorpListItem = (props: CorpListItemProps) => {
 
   const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
 
-  const onSubmit = () => {
-    console.log(corp.corp_id, corp.corp_name)
-  }
-
   if (!actives) return <></>
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
       <HStack mb={'20px'}>
-        <Editable textAlign="center" defaultValue={corp?.corp_name} onSubmit={onSubmit}>
+        {/* <Text textAlign="center" defaultValue={corp?.corp_name}>
           <EditablePreview />
           <EditableInput />
-        </Editable>
-        {/* <Text fontWeight={'bold'} px={3}>
-          {corp?.corp_name}
         </Text> */}
+        <Text fontWeight={'bold'} px={3}>
+          {corp?.corp_name}
+        </Text>
         <Spacer></Spacer>
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
@@ -120,18 +118,27 @@ export const CorpListItem = (props: CorpListItemProps) => {
                 <>
                   {actives.map((active: Active) => {
                     return (
-                      <Tr
-                        key={active.corp_id}
-                        _hover={{ bg: 'white', transition: '0.2s' }}
-                        onClick={() => {}}
-                        cursor={'pointer'}
-                      >
-                        <Td>{active.active_name}</Td>
-                        <Td>{active.active_at.toString()}</Td>
-                        <Td>{active.active_place}</Td>
-                        <Td>{active.absence_submit_at?.toString()}</Td>
-                        <Td>{ActiveClass.selectionResult[active.selection_result]}</Td>
-                      </Tr>
+                      <ActiveListItem key={active.id} active={active} corp={corp} />
+                      // <>
+                      //   <Tr
+                      //     key={active.id}
+                      //     _hover={{ bg: 'white', transition: '0.2s' }}
+                      //     onClick={onOpenEditActive}
+                      //     cursor={'pointer'}
+                      //   >
+                      //     <Td>{active.active_name}</Td>
+                      //     <Td>{active.active_at.toString()}</Td>
+                      //     <Td>{active.active_place}</Td>
+                      //     <Td>{active.absence_submit_at?.toString()}</Td>
+                      //     <Td>{ActiveClass.selectionResult[active.selection_result]}</Td>
+                      //   </Tr>
+                      //   <EditActiveModal
+                      //     isOpen={isOpenEditActive}
+                      //     onClose={onCloseEditActive}
+                      //     corp={corp}
+                      //     active={active}
+                      //   />
+                      // </>
                     )
                   })}
                 </>
