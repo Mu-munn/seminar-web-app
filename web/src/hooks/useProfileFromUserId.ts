@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Profile } from 'src/types/types'
+import { Profile } from 'src/types/profile'
 import { supabase } from '../libs/utils/supabaseClient'
 import useAuthUser from './useAuthUser'
 

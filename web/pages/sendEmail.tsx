@@ -16,7 +16,7 @@ import {
   import { supabase } from '../src/libs/utils/supabaseClient'
   import { useRouter } from 'next/router'
   
-  export default function SignUp() {
+  export default function SendEmail() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
   
