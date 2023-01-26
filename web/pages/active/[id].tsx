@@ -22,7 +22,7 @@ import {
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { Corp } from 'src/types/corp'
-import { Profile } from 'src/types/types'
+import { Profile } from 'src/types/profile'
 // import { Corp, Profile } from 'src/types/types'
 import useSWR from 'swr'
 

@@ -22,6 +22,7 @@ import { UserInfo } from './UserInfo'
 import { supabase } from '../../../src/libs/utils/supabaseClient'
 import useAuthUser from '@/hooks/useAuthUser'
 import useProfile from '@/hooks/useProfile'
+import { isAdminOfProfile } from '@/libs/util'
 
 const SidebarLinkComponent = forwardRef(function LogoComponent(
   props: {
@@ -46,6 +47,8 @@ export const UserLayout = (props: AdminLayoutProps) => {
   const { profile } = useProfile()
 
   const isClosable = useBreakpointValue({ base: true, md: false })
+
+  const isAdmin = profile && isAdminOfProfile(profile)
 
   const handleLogOut = async (e: any) => {
     e.preventDefault()
@@ -81,9 +84,13 @@ export const UserLayout = (props: AdminLayoutProps) => {
           <Heading fontSize="40px" fontWeight="bold" pb="" w={'100%'} textAlign={'center'} pt={3}>
             MINORU
           </Heading>
-          {profile?.isAdmin && <Text textAlign={'center'}>管理者</Text>}
+          {isAdmin && (
+            <Text textAlign={'center'} fontWeight={'bold'}>
+              管理者
+            </Text>
+          )}
 
-          {profile?.isAdmin && (
+          {isAdmin && (
             <Center w={'100%'} mt={7}>
               <Button
                 display="block"
@@ -93,6 +100,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 bg={'white'}
                 color={'gray'}
                 w={'80%'}
+                onClick={()=>{}}
               >
                 教員を招待する
               </Button>
@@ -104,7 +112,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
               {/* <Link href="/">
                 <SidebarLinkComponent icon={<BsBuilding />}>ダッシュボード</SidebarLinkComponent>
               </Link> */}
-              {!profile?.isAdmin && user && (
+              {!isAdmin && user && (
                 <Link
                   href={`/active/${user.id}`}
                   onClick={() => {
@@ -114,10 +122,17 @@ export const UserLayout = (props: AdminLayoutProps) => {
                   <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
                 </Link>
               )}
+              {isAdmin && (
+                <Link href="/todos">
+                  <SidebarLinkComponent icon={<BsLightbulb />}>
+                    {'ダッシュボード'}
+                  </SidebarLinkComponent>
+                </Link>
+              )}
 
               <Link href="/everyone">
                 <SidebarLinkComponent icon={<BsLightbulb />}>
-                  {profile?.isAdmin ? '生徒の頑張り' : 'クラスのみんなの活動'}
+                  {isAdmin ? '生徒の頑張り' : 'クラスのみんなの活動'}
                 </SidebarLinkComponent>
               </Link>
             </Stack>
@@ -136,9 +151,9 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 </Box>
               </Link>
               <Link href="/contact">
-              <SidebarLink mt="5" icon={<BsMailbox />}>
-                お問い合わせ
-              </SidebarLink>
+                <SidebarLink mt="5" icon={<BsMailbox />}>
+                  お問い合わせ
+                </SidebarLink>
               </Link>
               <SidebarLink mt="2" icon={<RiLogoutBoxRLine />} onClick={handleLogOut}>
                 ログアウト

@@ -8,6 +8,14 @@ const useAuthUser = () => {
   const [userId, setUserId] = useState('')
   const [isLoading, setLoading] = useState<boolean>()
   const [token, setToken] = useState()
+  const [profileId, setProfileId] = useState<string>()
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    user && setProfileId(user.id)
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session !== null && session !== undefined) {
@@ -22,6 +30,7 @@ const useAuthUser = () => {
         setUserId(session.user.id)
       }
     })
+    getUser()
   }, [supabase])
 
   return {
@@ -29,6 +38,7 @@ const useAuthUser = () => {
     userId,
     isLoading,
     token,
+    profileId,
   }
 }
 export default useAuthUser

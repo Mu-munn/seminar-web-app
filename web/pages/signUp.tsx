@@ -145,35 +145,19 @@ export default function SignUp() {
             </Stack>
             <Center rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
               <Stack spacing={4} w={'80%'} my={10}>
-                <Stack spacing={10} pt={2}>
-                      <Button
-                        id="button"
-                        loadingText="Submitting"
-                        size="lg"
-                        bg={'blue.400'}
-                        color={'white'}
-                        _hover={{
-                          bg: 'blue.500',
-                        }}
-                        type={'button'}
-                        onClick ={()=>Router.push('/teacherSignUp')}
-                      >
-                        教員用登録ページへ
-                      </Button>
-                </Stack>
                 <form
                   onSubmit={(e) => {
                     submit(e)
                   }}
                 >
-                  <FormControl id="course" isRequired>
+                  <FormControl id="course" isRequired mb={2}>
                     <FormLabel>学部・学科</FormLabel>
                     <Select placeholder="--" name="course" onChange={handleInputChange}>
                       <option value="1">情報総合学科</option>
                       <option value="2">音楽・音響学科</option>
                     </Select>
                   </FormControl>
-                  <HStack justify={'space-between'}>
+                  <HStack justify={'space-between'} mb={2}>
                     <FormControl id="grade" isRequired w={'50%'}>
                       <FormLabel>学年</FormLabel>
                       <Select placeholder="--" name="grade" onChange={handleInputChange}>
@@ -192,7 +176,7 @@ export default function SignUp() {
                       </Select>
                     </FormControl>
                   </HStack>
-                  <HStack justify={'space-between'}>
+                  <HStack justify={'space-between'} mb={2}>
                     <FormControl id="classNumber" isRequired w={'40%'}>
                       <FormLabel>出席番号</FormLabel>
                       <Input
@@ -202,7 +186,7 @@ export default function SignUp() {
                         onChange={handleInputChange}
                       />
                     </FormControl>
-                    <FormControl id="studentNumber" isRequired w={'60%'}>
+                    <FormControl id="studentNumber" isRequired w={'60%'} mb={2}>
                       <FormLabel>学籍番号</FormLabel>
                       <Input
                         type="text"
@@ -212,7 +196,7 @@ export default function SignUp() {
                       />
                     </FormControl>
                   </HStack>
-                  <HStack justify={'space-between'}>
+                  <HStack justify={'space-between'} mb={2}>
                     <FormControl id="lastName" isRequired w={'50%'}>
                       <FormLabel>苗字</FormLabel>
                       <Input type="text" name="lastName" onChange={handleInputChange} />
@@ -222,11 +206,11 @@ export default function SignUp() {
                       <Input type="text" name="firstName" onChange={handleInputChange} />
                     </FormControl>
                   </HStack>
-                  <FormControl id="email" isRequired>
+                  <FormControl id="email" isRequired mb={2}>
                     <FormLabel>メールアドレス</FormLabel>
                     <Input type="email" name="email" onChange={handleInputChange} />
                   </FormControl>
-                  <FormControl id="password" isRequired>
+                  <FormControl id="password" isRequired mb={5}>
                     <FormLabel>パスワード</FormLabel>
                     <InputGroup>
                       <Input
@@ -244,7 +228,7 @@ export default function SignUp() {
                       </InputRightElement>
                     </InputGroup>
                   </FormControl>
-                  <Stack spacing={10} pt={2}>
+                  <Stack pt={2}>
                     <Button
                       id="button"
                       loadingText="Submitting"
@@ -257,6 +241,19 @@ export default function SignUp() {
                       type={'submit'}
                     >
                       新規登録
+                    </Button>
+                    <Button
+                      m={'0 auto'}
+                      id="button"
+                      loadingText="Submitting"
+                      size="lg"
+                      // bg={'blue.400'}
+                      // color={'white'}
+                      colorScheme={'facebook'}
+                      type={'button'}
+                      onClick={() => Router.push('/teacherSignUp')}
+                    >
+                      教員の方はこちら
                     </Button>
                   </Stack>
                   <Stack pt={4}>
