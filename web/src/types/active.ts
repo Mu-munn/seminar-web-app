@@ -1,4 +1,5 @@
 export interface Active {
+  id: string
   corp_id: string
   active_number: number
   active_name: string
