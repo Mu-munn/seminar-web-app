@@ -100,7 +100,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 bg={'white'}
                 color={'gray'}
                 w={'80%'}
-                onClick={()=>{}}
+                onClick={() => {}}
               >
                 教員を招待する
               </Button>
@@ -134,6 +134,9 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 <SidebarLinkComponent icon={<BsLightbulb />}>
                   {isAdmin ? '生徒の頑張り' : 'クラスのみんなの活動'}
                 </SidebarLinkComponent>
+              </Link>
+              <Link href={`/articles`}>
+                <SidebarLinkComponent icon={<BsBuilding />}>掲示板</SidebarLinkComponent>
               </Link>
             </Stack>
             <Box position="absolute" bottom="8" w={'100%'}>
