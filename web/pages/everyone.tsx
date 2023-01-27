@@ -66,12 +66,13 @@ const EveryOne = () => {
             name="searchprogress" 
             value={fieldValues.searchprogress} 
             onChange={handleInputChange}>
-              <option value="0">内定合格-承諾</option>
-              <option value="1">内定合格-保留</option>
-              <option value="2">内定合格-辞退</option>
-              <option value="3">途中辞退</option>
-              <option value="4">受験せず</option>
-              <option value="5">不合格</option>
+              <option value='0'>活動中</option>
+              <option value="1">内定合格-承諾</option>
+              <option value="2">内定合格-保留</option>
+              <option value="3">内定合格-辞退</option>
+              <option value="4">途中辞退</option>
+              <option value="5">受験せず</option>
+              <option value="6">不合格</option>
             </Select>
           </FormControl>
             <Button
