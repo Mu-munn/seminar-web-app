@@ -9,7 +9,7 @@ const everyoneApi = async (req: NextApiRequest, res: NextApiResponse) => {
     const profileGrade = req.query.grade
     const { data, error } = await supabase
       .from('profiles')
-      .select('id,full_name,class_number,corps(corp_id,corp_name)')
+      .select('id,full_name,class_number,corps(corp_id,corp_name,progress)')
       .eq('class', profileClass)
       .eq('grade', profileGrade)
       .order('class_number')
