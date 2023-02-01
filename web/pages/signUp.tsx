@@ -21,6 +21,7 @@ import { useState } from 'react'
 import { supabase } from '../src/libs/utils/supabaseClient'
 import Router from 'next/router'
 import { Profile, ProfileCreate } from 'src/types/profile'
+import { CourseArray } from '@/libs/assets/CourseArray'
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
@@ -153,8 +154,9 @@ export default function SignUp() {
                   <FormControl id="course" isRequired mb={2}>
                     <FormLabel>学部・学科</FormLabel>
                     <Select placeholder="--" name="course" onChange={handleInputChange}>
-                      <option value="1">情報総合学科</option>
-                      <option value="2">音楽・音響学科</option>
+                    {CourseArray.map((Course,idx) => (
+                      <option value={idx}>{Course}</option>
+                    ))}
                     </Select>
                   </FormControl>
                   <HStack justify={'space-between'} mb={2}>
