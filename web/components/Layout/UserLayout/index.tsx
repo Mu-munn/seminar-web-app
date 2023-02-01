@@ -90,7 +90,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
             </Text>
           )}
 
-          {isAdmin && (
+          {isAdmin ? (
             <Center w={'100%'} mt={7}>
               <Button
                 display="block"
@@ -105,7 +105,7 @@ export const UserLayout = (props: AdminLayoutProps) => {
                 教員を招待する
               </Button>
             </Center>
-          )}
+          ) : null}
 
           <ScrollArea pt="5" pb="6" w={'100%'}>
             <Stack pb="6" w={'100%'}>
@@ -122,13 +122,13 @@ export const UserLayout = (props: AdminLayoutProps) => {
                   <SidebarLinkComponent icon={<BsBuilding />}>自分の活動</SidebarLinkComponent>
                 </Link>
               )}
-              {isAdmin && (
+              {isAdmin ? (
                 <Link href="/todos">
                   <SidebarLinkComponent icon={<BsLightbulb />}>
                     {'ダッシュボード'}
                   </SidebarLinkComponent>
                 </Link>
-              )}
+              ) : null}
 
               <Link href="/everyone">
                 <SidebarLinkComponent icon={<BsLightbulb />}>

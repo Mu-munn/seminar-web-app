@@ -75,28 +75,30 @@ export const CorpListItem = (props: CorpListItemProps) => {
           {corp?.corp_name}
         </Text>
         <Spacer></Spacer>
-        <Menu>
-          <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-          <MenuList>
-            <MenuItem onClick={onEditOpen} icon={<EditIcon />}>
-              編集する
-              <EditConfirm
-                corp_id={corp.corp_id}
-                corp_name={corp.corp_name}
-                isOpen={isEditOpen}
-                onClose={onEditClose}
-              ></EditConfirm>
-            </MenuItem>
-            <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
-              削除する
-              <DeleteConfirm
-                corp_id={corp.corp_id}
-                isOpen={isOpen}
-                onClose={onClose}
-              ></DeleteConfirm>
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        {isSelfAccount ? (
+          <Menu>
+            <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
+            <MenuList>
+              <MenuItem onClick={onEditOpen} icon={<EditIcon />}>
+                編集する
+                <EditConfirm
+                  corp_id={corp.corp_id}
+                  corp_name={corp.corp_name}
+                  isOpen={isEditOpen}
+                  onClose={onEditClose}
+                ></EditConfirm>
+              </MenuItem>
+              <MenuItem color={'red.600'} onClick={onOpen} icon={<DeleteIcon />}>
+                削除する
+                <DeleteConfirm
+                  corp_id={corp.corp_id}
+                  isOpen={isOpen}
+                  onClose={onClose}
+                ></DeleteConfirm>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : null}
       </HStack>
 
       {actives && actives.length > 0 ? (
@@ -118,7 +120,12 @@ export const CorpListItem = (props: CorpListItemProps) => {
                 <>
                   {actives.map((active: Active) => {
                     return (
-                      <ActiveListItem key={active.id} active={active} corp={corp} />
+                      <ActiveListItem
+                        key={active.id}
+                        active={active}
+                        corp={corp}
+                        isSelfAccount={isSelfAccount ?? false}
+                      />
                       // <>
                       //   <Tr
                       //     key={active.id}
