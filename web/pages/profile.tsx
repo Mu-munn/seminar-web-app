@@ -16,6 +16,7 @@ import { UserLayout } from '@/components/Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
 import { supabase } from '@/libs/utils/supabaseClient'
 import Router from 'next/router'
+import { CourseArray } from '@/libs/assets/CourseArray'
 
 interface UserCreate {
   fullName: string // フルネーム
@@ -41,6 +42,7 @@ export default function Profile() {
   }, [user])
   const toast = useToast()
 
+  
   const updateProfile = async ({
     fullName,
     course,
@@ -150,13 +152,9 @@ export default function Profile() {
                   placeholder={'学科を選択'}
                   onChange={(event) => setCourse(parseInt(event.target.value))}
                 >
-                  <option value="0">情報総合学科</option>
-                  <option value="1">情報システム科</option>
-                  <option value="2">情報処理学科</option>
-                  <option value="3">AIシステム科</option>
-                  <option value="4">情報セキュリティ学科</option>
-                  <option value="5">高度情報学科</option>
-                  <option value="6">IT技術研究科</option>
+                  {CourseArray.map((Course,idx) => (
+                    <option key={Course} value={idx}>{Course}</option>
+                  ))}
                 </Select>
               </FormControl>
 
