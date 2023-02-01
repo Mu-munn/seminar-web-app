@@ -155,7 +155,7 @@ export default function SignUp() {
                     <FormLabel>学部・学科</FormLabel>
                     <Select placeholder="--" name="course" onChange={handleInputChange}>
                     {CourseArray.map((Course,idx) => (
-                      <option value={idx}>{Course}</option>
+                      <option key={Course} value={idx}>{Course}</option>
                     ))}
                     </Select>
                   </FormControl>

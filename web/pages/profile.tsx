@@ -42,7 +42,6 @@ export default function Profile() {
   }, [user])
   const toast = useToast()
 
-  console.log(CourseArray);
   
   const updateProfile = async ({
     fullName,
@@ -154,7 +153,7 @@ export default function Profile() {
                   onChange={(event) => setCourse(parseInt(event.target.value))}
                 >
                   {CourseArray.map((Course,idx) => (
-                    <option value={idx}>{Course}</option>
+                    <option key={Course} value={idx}>{Course}</option>
                   ))}
                 </Select>
               </FormControl>
