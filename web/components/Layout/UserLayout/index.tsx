@@ -81,9 +81,11 @@ export const UserLayout = (props: AdminLayoutProps) => {
         position="fixed"
       >
         <Box fontSize="sm" lineHeight="tall">
-          <Heading fontSize="40px" fontWeight="bold" pb="" w={'100%'} textAlign={'center'} pt={3}>
-            MINORU
-          </Heading>
+          <Link href={`/everyone`}>
+            <Heading fontSize="40px" fontWeight="bold" pb="" w={'100%'} textAlign={'center'} pt={3}>
+              MINORU
+            </Heading>
+          </Link>
           {isAdmin && (
             <Text textAlign={'center'} fontWeight={'bold'}>
               管理者
