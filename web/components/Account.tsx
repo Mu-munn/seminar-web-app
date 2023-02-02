@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { UserLayout } from './Layout/UserLayout'
 import useAuthUser from '@/hooks/useAuthUser'
 import { themeColors } from '@/libs/utils/theme'
+import EveryOne from 'pages/everyone'
+import { useEffect } from 'react'
 
 export default function Account(session: any) {
   const router = useRouter()
@@ -76,10 +78,14 @@ export default function Account(session: any) {
     }
   }
 
+  useEffect(() => {
+    router.push('/everyone')
+  })
+
   return (
     <>
       <UserLayout>
-        {/* <Center> */}
+        {/* <EveryOne></EveryOne> */}
 
         <Center h={'90vh'} w={'100%'}>
           <VStack>
@@ -89,7 +95,6 @@ export default function Account(session: any) {
             <Text>初期表示ページ何置く？ 案あったら教えて！</Text>
           </VStack>
         </Center>
-        {/* </Center> */}
       </UserLayout>
       {/* <Button onClick={handleLogOut}>ログアウト</Button> */}
     </>

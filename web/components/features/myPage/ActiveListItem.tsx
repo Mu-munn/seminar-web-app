@@ -7,10 +7,11 @@ import { Corp } from 'src/types/corp'
 interface ActiveListItemProps {
   active: Active
   corp: Corp
+  isSelfAccount: boolean
 }
 
 export const ActiveListItem = (props: ActiveListItemProps) => {
-  const { active, corp } = props
+  const { active, corp, isSelfAccount } = props
   const {
     isOpen: isOpenEditActive,
     onOpen: onOpenEditActive,
@@ -21,7 +22,9 @@ export const ActiveListItem = (props: ActiveListItemProps) => {
       <Tr
         key={active.id}
         _hover={{ bg: 'white', transition: '0.2s' }}
-        onClick={onOpenEditActive}
+        onClick={() => {
+          isSelfAccount && onOpenEditActive()
+        }}
         cursor={'pointer'}
       >
         <Td>{active.active_name}</Td>
