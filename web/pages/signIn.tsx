@@ -30,6 +30,7 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false)
   const [value, setValue] = useState('1')
   //   const [email, setEmail] = useState('')
+  const toast = useToast()
 
   const defaultValue = {
     email: '',
@@ -56,7 +57,13 @@ export default function SignUp() {
       password: password,
     })
     if (error) {
-      alert(JSON.stringify(error))
+      toast({
+        title: 'ログインエラー!!',
+        description: JSON.stringify(error),
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
     } else {
       router.push('/')
     }
@@ -120,6 +127,13 @@ export default function SignUp() {
               <Text align={'center'}>
                 <Link color={'blue.400'} href="/signUp">
                   新規登録はこちら
+                </Link>
+              </Text>
+            </Stack>
+            <Stack pt={4}>
+              <Text align={'center'}>
+                <Link color={'blue.400'} href="/sendEmail">
+                  パスワードを忘れた方はこちら
                 </Link>
               </Text>
             </Stack>

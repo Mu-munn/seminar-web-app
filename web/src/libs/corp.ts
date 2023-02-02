@@ -1,4 +1,4 @@
-import { Corp } from 'src/types/types'
+import { Corp } from 'src/types/corp'
 
 // export const sortCorpOfCreated = (corps: Corp[]) => {
 

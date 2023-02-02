@@ -5,4 +5,8 @@ export const themeColors = {
   fontColor: {
     main: '#363636',
   },
+  boxColor: {
+    /** gray.100 */
+    listItem: 'gray.100',
+  },
 }

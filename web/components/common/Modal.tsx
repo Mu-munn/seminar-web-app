@@ -1,5 +1,5 @@
 import useAuthUser from '@/hooks/useAuthUser'
-import { supabase } from '@/libs/utils/supabaseClient'
+import { CorpService } from '@/libs/services/corp-service'
 import {
   Modal,
   ModalOverlay,
@@ -14,24 +14,30 @@ import {
   FormLabel,
   IconButton,
 } from '@chakra-ui/react'
-import Router from 'next/router'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
+import { Corp } from 'src/types/corp'
+import { useSWRConfig } from 'swr'
+
+interface CorpListItemProps {
+  corp: Corp
+}
 
 export const OriginalModal = ({ isOpen, onClose }: any) => {
   const [corpName, setCorpName] = useState('')
   const { user } = useAuthUser()
+  const { mutate } = useSWRConfig()
 
   const handleSubmit = async () => {
-    const { data, error } = await supabase
-      .from('corps')
-      .insert([{ corp_name: corpName, user_id: user?.id }])
+    if (!user) return console.log('error : no user')
+    const { error } = await CorpService.insertCorps({ corp_name: corpName, user_id: user.id })
 
     if (error) {
       alert(JSON.stringify(error))
     } else {
       onClose()
-      Router.reload()
+      // router.reload()
+      mutate(`/api/corps/${user?.id}`)
     }
   }
   return (
