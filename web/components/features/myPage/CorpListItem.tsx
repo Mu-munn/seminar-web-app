@@ -32,7 +32,7 @@ import { AddActiveModal } from '@/components/common/Modal/AddActiveModal'
 import router from 'next/router'
 import useAuthUser from '@/hooks/useAuthUser'
 import { useProfileFromUserId } from '@/hooks/useProfileFromUserId'
-import { isTrue } from '@/libs/util'
+import { isAdminOfProfile, isTrue } from '@/libs/util'
 import { useActivesFromCorpId } from '@/hooks/useActivesFromCorpId'
 import { useEffect, useState } from 'react'
 import { Active } from 'src/types/active'
@@ -42,6 +42,7 @@ import { fetcher } from '@/libs/utils/useSWR'
 import { EditConfirm } from '@/components/common/Modal/EditCorpModal'
 import { EditActiveModal } from '@/components/common/Modal/EditActiveModal'
 import { ActiveListItem } from './ActiveListItem'
+import useProfile from '@/hooks/useProfile'
 
 interface CorpListItemProps {
   corp: Corp
@@ -50,6 +51,7 @@ interface CorpListItemProps {
 export const CorpListItem = (props: CorpListItemProps) => {
   const { corp } = props
   const toast = useToast()
+  const { profile } = useProfile()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isActiceOpen, onOpen: onActiveOpen, onClose: onActiveClose } = useDisclosure()
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
@@ -59,10 +61,11 @@ export const CorpListItem = (props: CorpListItemProps) => {
   const userId = { id }.id as string
 
   const isSelfAccount = user && isTrue(userId, user.id)
+  const isAdmin = profile && isAdminOfProfile(profile)
 
   const { data: actives, error } = useSWR(`/api/actives/${corp.corp_id}`, fetcher)
 
-  if (!actives) return <></>
+  if (!actives && !profile) return
 
   return (
     <Box borderRadius={'xl'} w={'100%'} p={5} bg={'gray.100'}>
@@ -75,7 +78,7 @@ export const CorpListItem = (props: CorpListItemProps) => {
           {corp?.corp_name}
         </Text>
         <Spacer></Spacer>
-        {isSelfAccount ? (
+        {isSelfAccount || isAdmin ? (
           <Menu>
             <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
             <MenuList>
@@ -166,18 +169,19 @@ export const CorpListItem = (props: CorpListItemProps) => {
         // </Center>
       )}
 
-      {isSelfAccount && (
-        <Button
-          width={'100%'}
-          variant={'outline'}
-          _hover={{ bg: 'blue.500', color: 'white' }}
-          color={'blue.500'}
-          mt={3}
-          onClick={onActiveOpen}
-        >
-          活動を追加
-        </Button>
-      )}
+      {isSelfAccount ||
+        (isAdmin && (
+          <Button
+            width={'100%'}
+            variant={'outline'}
+            _hover={{ bg: 'blue.500', color: 'white' }}
+            color={'blue.500'}
+            mt={3}
+            onClick={onActiveOpen}
+          >
+            活動を追加
+          </Button>
+        ))}
 
       <AddActiveModal isOpen={isActiceOpen} onClose={onActiveClose} corp={corp} />
     </Box>
